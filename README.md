@@ -13,3 +13,6 @@ Tech Stack:
 * Backend - Spring Boot
 * Frontend - Angular
 * Database - MySQL
+
+Saptamana 4:
+Adaugat un fisier pdf cu wireframe-ul proiectului in format PDF. Pentru ca butoanele sa fie clickable, fisierul trebuie descarcat si accesat local.
