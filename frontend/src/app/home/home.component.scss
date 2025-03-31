@@ -1,0 +1,82 @@
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .website-name {
+    margin: 0;
+    font-size: 48px;
+    font-weight: bold;
+  }
+  
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding-top: 70px;
+    box-sizing: border-box;
+    gap: 20px;
+  }
+  
+  .text-box {
+    width: 47%;
+    height: 500px;
+    font-size: 20px;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    resize: none;
+    margin-top: -70px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 50px;
+  }
+
+  .analyze-button {
+    margin-top: 30px;
+    padding: 10px 20px;
+    font-size: 25px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+  }
+  
+  .analyze-button:hover {
+    background-color: #45a049;
+  }
+
+  .login-button {
+    background-color: #1E90FF;
+    color: white;
+    border: 1px solid white;
+    padding: 5px 15px;
+    font-size: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-right: 50px;
+  }
+  
+  .login-button:hover {
+    background-color: #4682B4;
+    color: #333;
+  }

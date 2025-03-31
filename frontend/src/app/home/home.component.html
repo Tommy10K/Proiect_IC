@@ -1,0 +1,9 @@
+<div class="header">
+    <h1 class="website-name">Dreamora</h1>
+    <button class="login-button" (click)="navigateToLogin()">Login</button>
+  </div>
+  
+  <div class="content">
+    <textarea class="text-box" placeholder="Type your dream here, stranger" [(ngModel)]="dreamText"></textarea>
+    <button class="analyze-button" (click)="clearText()">Analyze Your Dream</button>
+  </div>

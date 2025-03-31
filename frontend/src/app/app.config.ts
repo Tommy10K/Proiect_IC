@@ -1,9 +1,15 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { ApplicationConfig, importProvidersFrom } from '@angular/core'; // Ensure importProvidersFrom is imported
+import { provideRouter, Routes } from '@angular/router';
+import { FormsModule } from '@angular/forms'; // Import FormsModule
+import { HomeComponent } from './home/home.component';
 
-import { routes } from './app.routes';
-import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
+const routes: Routes = [
+  { path: '', component: HomeComponent },
+];
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideClientHydration(withEventReplay())]
+  providers: [
+    provideRouter(routes),
+    importProvidersFrom(FormsModule), // Use importProvidersFrom for FormsModule
+  ],
 };
