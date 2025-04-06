@@ -1,19 +1,16 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
-import { provideRouter } from '@angular/router';
-import { Routes } from '@angular/router';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-dashboard',
   standalone: true,
   imports: [FormsModule, RouterOutlet],
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss']
 })
-
-export class HomeComponent {
+export class DashboardComponent {
   dreamText: string = '';
 
   constructor(private router: Router) {}
@@ -22,7 +19,11 @@ export class HomeComponent {
     this.dreamText = '';
   }
 
-  navigateToLogin(): void {
-    this.router.navigate(['/dashboard']);
+  navigateToJournal() {
+    this.router.navigate(['/journal']);
+  }
+
+  navigateToStatistics() {
+    this.router.navigate(['/statistics']);
   }
 }

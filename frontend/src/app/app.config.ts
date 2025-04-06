@@ -1,15 +1,13 @@
-import { ApplicationConfig, importProvidersFrom } from '@angular/core'; // Ensure importProvidersFrom is imported
-import { provideRouter, Routes } from '@angular/router';
-import { FormsModule } from '@angular/forms'; // Import FormsModule
-import { HomeComponent } from './home/home.component';
-
-const routes: Routes = [
-  { path: '', component: HomeComponent },
-];
+import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { routes } from './app.routes'; // Import from app.routes.ts
+import { provideHttpClient } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    importProvidersFrom(FormsModule), // Use importProvidersFrom for FormsModule
+    provideHttpClient(),
+    importProvidersFrom(FormsModule),
   ],
 };

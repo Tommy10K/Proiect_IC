@@ -1,47 +1,98 @@
-/* filepath: f:\IC\Proiect_IC\frontend\src\app\login\login.component.scss */
 .login-container {
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    background-color: #f9f9f9;
-  }
-  
-  .login-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .login-container form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .login-container form label {
-    margin-bottom: 5px;
-  }
-  
-  .login-container form input {
-    margin-bottom: 15px;
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .login-container form button {
-    padding: 10px;
-    font-size: 16px;
-    background-color: #1E90FF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .login-container form button:hover {
-    background-color: #4682B4;
-  }
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 30px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+}
+
+.login-container h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 24px;
+  color: #333;
+}
+
+.login-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-container form input,
+.login-container form button {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto 20px;
+}
+
+
+.login-container form label {
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #555;
+  align-self: flex-start;
+}
+
+.login-container form input {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto 20px;
+  padding: 12px 15px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-container form input:focus {
+  border-color: #1E90FF;
+  box-shadow: 0 0 5px rgba(30, 144, 255, 0.5);
+  outline: none;
+}
+
+.login-container form button {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  padding: 12px;
+  font-size: 16px;
+  background-color: #1E90FF;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.login-container form button:hover {
+  background-color: #4682B4;
+  transform: scale(1.05);
+}
+
+.login-container form button:active {
+  transform: scale(0.98);
+}
+
+.toggle-link {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.toggle-link button {
+  background: none;
+  border: none;
+  color: #1E90FF;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.toggle-link button:hover {
+  text-decoration: underline;
+}
