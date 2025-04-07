@@ -1,14 +1,13 @@
 package com.ITristii.backend.controller;
 
-
-import com.ITristii.backend.dto.AuthRequest;
-import com.ITristii.backend.dto.AuthResponse;
-import com.ITristii.backend.model.User;
-import com.ITristii.backend.repository.UserRepository;
+import com.ITristii.backend.dto.*;
+import com.ITristii.backend.service.AuthService;
 import com.ITristii.backend.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,25 +21,30 @@ public class AuthController {
     private JwtService jwtService;
 
     @Autowired
-    private PasswordEncoder encoder;
-
-    @Autowired
-    private UserRepository userRepository;
+    private AuthService authService;
 
     @PostMapping("/login")
-    public AuthResponse login(@RequestBody AuthRequest request) {
-        authManager.authenticate(new UsernamePasswordAuthenticationToken(
-                request.getUsername(), request.getPassword()));
-        String token = jwtService.generateToken(request.getUsername());
+    public AuthResponse login(@RequestBody LoginRequest request) {
+        Authentication authentication = authManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getUsername(),
+                        request.getPassword()
+                )
+        );
+
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String token = jwtService.generateToken(userDetails.getUsername());
         return new AuthResponse(token);
     }
 
     @PostMapping("/register")
-    public String register(@RequestBody AuthRequest request) {
-        User user = new User();
-        user.setUsername(request.getUsername());
-        user.setPassword(encoder.encode(request.getPassword()));
-        userRepository.save(user);
-        return "User registered successfully!";
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+        try {
+            AuthResponse response = authService.register(request);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
+
 }

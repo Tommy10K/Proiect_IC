@@ -23,6 +23,6 @@ export class HomeComponent {
   }
 
   navigateToLogin(): void {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/login']);
   }
 }

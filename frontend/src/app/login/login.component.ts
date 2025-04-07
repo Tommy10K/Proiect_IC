@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { RouterOutlet } from '@angular/router';
-import { CommonModule } from '@angular/common'; 
+import { Router, RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -12,11 +12,14 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  isSignupMode = false;  // Toggles between login and signup
-  loginData = { username: '', password: '' }; // Holds login form data
-  confirmPassword = '';  // For signup form
+  isSignupMode = false;
+  loginData = { username: '', password: '' };
+  confirmPassword = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   toggleMode() {
     this.isSignupMode = !this.isSignupMode;
@@ -24,34 +27,33 @@ export class LoginComponent {
 
   login(): void {
     if (this.isSignupMode) {
-      // Handle signup logic
       if (this.loginData.password !== this.confirmPassword) {
         alert('Passwords do not match!');
         return;
       }
-      console.log('Signing up with:', this.loginData.username, this.loginData.password);
-      this.http.post('http://localhost:8080/api/auth/signup', this.loginData).subscribe({
-        next: (response) => {
-          console.log('Sign Up successful:', response);
-          alert('Sign Up successful!');
+
+      this.authService.register(this.loginData).subscribe({
+        next: (res) => {
+          this.authService.saveToken(res.token);
+          alert('Sign-up successful!');
+          this.router.navigate(['/dashboard']); // ✅ redirect după sign-up
         },
-        error: (error) => {
-          console.error('Sign Up failed:', error);
-          alert('Sign Up failed. Please try again.');
-        },
+        error: (err) => {
+          alert('Sign-up failed.');
+          console.error(err);
+        }
       });
     } else {
-      // Handle login logic
-      console.log('Logging in with:', this.loginData.username, this.loginData.password);
-      this.http.post('http://localhost:8080/api/auth/login', this.loginData).subscribe({
-        next: (response) => {
-          console.log('Login successful:', response);
+      this.authService.login(this.loginData).subscribe({
+        next: (res) => {
+          this.authService.saveToken(res.token);
           alert('Login successful!');
+          this.router.navigate(['/dashboard']); // ✅ redirect după login
         },
-        error: (error) => {
-          console.error('Login failed:', error);
-          alert('Login failed. Please try again.');
-        },
+        error: (err) => {
+          alert('Login failed.');
+          console.error(err);
+        }
       });
     }
   }

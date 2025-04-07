@@ -1,7 +1,7 @@
 <div class="login-container">
   <h2>{{ isSignupMode ? 'Sign Up' : 'Login' }}</h2>
 
-  <form (ngSubmit)="login()">
+  <form>
     <div>
       <label for="username">Email:</label>
       <input type="email" id="username" [(ngModel)]="loginData.username" name="username" required />
@@ -17,7 +17,9 @@
       <input type="password" id="confirmPassword" [(ngModel)]="confirmPassword" name="confirmPassword" required />
     </div>
 
-    <button type="submit">{{ isSignupMode ? 'Sign Up' : 'Login' }}</button>
+    <button type="button" (click)="login()">
+      {{ isSignupMode ? 'Sign Up' : 'Login' }}
+    </button>
   </form>
 
   <p class="toggle-link">
