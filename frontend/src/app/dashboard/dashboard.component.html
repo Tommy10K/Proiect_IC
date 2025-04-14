@@ -10,27 +10,27 @@
 
   <div class="three-column-layout">
     <div class="left-column">
-      <button 
-        class="side-button"
-        (click)="navigateToJournal()"
-      >
-        Journal
-      </button>
-      <button 
-        class="side-button"
-        (click)="navigateToStatistics()"
-      >
-        Statistics
-      </button>
+      <button class="side-button" (click)="navigateToJournal()">Journal</button>
+      <button class="side-button" (click)="navigateToStatistics()">Statistics</button>
     </div>
     
     <div class="middle-column">
-      <textarea class="text-box" placeholder="Type your dream here, user" [(ngModel)]="dreamText"></textarea>
+      <!-- Add ngClass to the text area so that when an interpretation is shown it receives a different styling -->
+      <textarea 
+        class="text-box" 
+        [ngClass]="{'interpreted': interpretation}"
+        placeholder="Type your dream here, user" 
+        [(ngModel)]="dreamText">
+      </textarea>
     </div>
     
     <div class="right-column">
+      <!-- (Ignored as requested) -->
     </div>
   </div>
 
-  <button class="analyze-button" (click)="clearText()">Analyze Your Dream</button>
+  <!-- The button toggles its action and label based on whether an interpretation exists -->
+  <button class="analyze-button" (click)="interpretation ? clearText() : analyzeDream()">
+    {{ interpretation ? 'Analyze Another Dream' : 'Analyze Your Dream' }}
+  </button>
 </div>

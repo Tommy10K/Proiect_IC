@@ -32,10 +32,25 @@ public class DreamAiService {
             );
 
             HttpEntity<Map<String, String>> request = new HttpEntity<>(body, headers);
-
             ResponseEntity<String> response = restTemplate.postForEntity(apiUrl, request, String.class);
 
-            return response.getBody();
+            String json = response.getBody();
+            if (json.contains("generated_text")) {
+                int start = json.indexOf("### Interpretation:");
+                if (start != -1) {
+                    String interpretation = json.substring(start + "### Interpretation:".length());
+
+                    interpretation = interpretation
+                            .replaceAll("[\\n\\r]+", " ")
+                            .replaceAll("\\\\n", " ")
+                            .replaceAll("[\\[\\]{}\"]", "")
+                            .trim();
+
+                    return interpretation;
+                }
+            }
+
+            return "Interpretation not available.";
         } catch (Exception e) {
             return "Eroare la interpretarea visului: " + e.getMessage();
         }
