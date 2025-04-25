@@ -1,9 +1,20 @@
 <div class="header">
-    <h1 class="website-name">Dreamora</h1>
-    <button class="login-button" (click)="navigateToLogin()">Login</button>
+  <h1 class="website-name">Dreamora</h1>
+  <button class="login-button" (click)="navigateToLogin()">Login</button>
+</div>
+
+<div class="content">
+  <textarea
+    class="text-box"
+    placeholder="Type your dream here, stranger"
+    [(ngModel)]="dreamText"
+  ></textarea>
+
+  <button class="analyze-button" (click)="analyzeDream()">Analyze Your Dream</button>
+  <button class="clear-button" (click)="clearText()">Clear</button>
+
+  <div class="interpretation-result" *ngIf="interpretation">
+    <h3>Interpretation:</h3>
+    <p>{{ interpretation }}</p>
   </div>
-  
-  <div class="content">
-    <textarea class="text-box" placeholder="Type your dream here, stranger" [(ngModel)]="dreamText"></textarea>
-    <button class="analyze-button" (click)="clearText()">Analyze Your Dream</button>
-  </div>
+</div>
