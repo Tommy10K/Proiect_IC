@@ -20,10 +20,26 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    return localStorage.getItem('token');
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return null;
+    }
+    return window.localStorage.getItem('token');
   }
 
   logout() {
     localStorage.removeItem('token');
+  }
+
+  getUserId(): number | null {
+    const token = this.getToken();
+    if (!token) return null;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const raw = payload.userId ?? payload.sub;
+      const id = Number(raw);
+      return isNaN(id) ? null : id;
+    } catch {
+      return null;
+    }
   }
 }

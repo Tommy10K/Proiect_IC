@@ -1,1 +1,20 @@
-<h1>journal coming soon dreamers</h1>
+<div *ngIf="message" class="alert">{{ message }}</div>
+
+<form [formGroup]="dreamForm" (ngSubmit)="onSubmit()">
+  <label>
+    Date:
+    <input type="date" formControlName="dreamDate" />
+  </label>
+
+  <label>
+    Title:
+    <input type="text" formControlName="title" />
+  </label>
+
+  <label>
+    Description:
+    <textarea formControlName="description"></textarea>
+  </label>
+
+  <button type="submit" [disabled]="dreamForm.invalid">Add Dream</button>
+</form>

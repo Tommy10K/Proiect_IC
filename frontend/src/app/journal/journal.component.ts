@@ -1,52 +1,68 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit }     from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
+import { RouterModule }           from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { RouterOutlet, Router } from '@angular/router';
+import { DreamEntryService } from '../services/dreamentry.service';
+import { Dream }                 from '../models/dream.model';
 import { CommonModule } from '@angular/common';
-import { DreamService } from '../services/dream.service';
+import { HttpClientModule } from '@angular/common/http';
+import { AuthService }        from '../services/auth.service';
 
 @Component({
   selector: 'app-journal',
   standalone: true,
-  imports: [CommonModule],
-  template: `
-    <h2>Dream Journal 2025</h2>
-    <div class="grid">
-      <div *ngFor="let day of days"
-           [class.has]="has(day)"
-           (click)="select(day)">
-        {{ day.getDate() }}
-      </div>
-    </div>
-
-    <h3 *ngIf="entries.length">Vis(e) pe {{ sel | date:'longDate' }}</h3>
-    <ul>
-      <li *ngFor="let e of entries">{{ e.interpretation }}</li>
-    </ul>
-  `,
-  styles:[`
-    .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.25rem;margin-bottom:1rem}
-    .grid div{width:2.5rem;height:2.5rem;display:flex;align-items:center;justify-content:center;border:1px solid #ddd;cursor:pointer}
-    .grid div.has{background:#b2e6b2}
-  `]
+  imports: [FormsModule, RouterOutlet, CommonModule, HttpClientModule, ReactiveFormsModule, RouterModule],
+  templateUrl: './journal.component.html',
+  styleUrls: ['./journal.component.scss']
 })
 export class JournalComponent implements OnInit {
-  days: Date[] = [];
-  map: Record<string, {interpretation:string; dreamDate:string}[]> = {};
-  sel?: string;
-  entries: any[] = [];
+  dreamForm!: FormGroup;
+ 
+  currentUserId: number | null = null;
+  message: string | null = null;
 
-  constructor(private svc: DreamService) {}
+  constructor(
+    private fb: FormBuilder,
+    private dreamService: DreamEntryService,
+    private auth: AuthService
+  ) {}
 
   ngOnInit() {
-    for (let d=new Date('2025-01-01'); d<=new Date('2025-12-31'); d.setDate(d.getDate()+1))
-      this.days.push(new Date(d));
+    this.currentUserId = this.auth.getUserId();
+    console.log('▶ currentUserId =', this.currentUserId);
 
-this.svc.getYear(2025).subscribe((mapData) => this.map = mapData);
+    this.dreamForm = this.fb.group({
+      dreamDate: ['', Validators.required],
+      title:     ['', [Validators.required, Validators.maxLength(255)]],
+      description: ['', Validators.maxLength(2000)]
+    });
   }
-  has(day: Date) {
-    return this.map[this.iso(day)];
+
+  onSubmit() {
+    console.log('↪ onSubmit fired, form=', this.dreamForm.value, 'userId=', this.currentUserId);
+    if (this.dreamForm.invalid) return;
+
+    const payload: Dream = {
+      userId: this.currentUserId,
+      ...this.dreamForm.value
+    };
+
+    this.dreamService.createDream(payload).subscribe({
+      next: created => {
+        console.log('Saved dream', created);
+        // reset with empty strings so the inputs clear
+        this.dreamForm.reset({
+          dreamDate:   '',
+          title:       '',
+          description: ''
+        });
+        this.message = 'Dream added successfully!';
+      },
+      error: err => {
+        console.error('Create failed', err);
+        this.message = 'Error adding dream';
+      }
+    });
   }
-  select(day: Date) {
-    this.sel = this.iso(day);
-    this.entries = this.map[this.sel] || [];
-  }
-  private iso(d: Date){ return d.toISOString().substring(0,10); }
 }
