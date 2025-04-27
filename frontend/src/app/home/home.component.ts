@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterOutlet } from '@angular/router';
-import { Router } from '@angular/router';
-import { DreamService } from '../services/dream.service'; 
+import { Router, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { DreamService } from '../services/dream.service';
 
 @Component({
   selector: 'app-home',
@@ -14,36 +13,32 @@ import { HttpClientModule } from '@angular/common/http';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
-  dreamText: string = '';
-  interpretation: string = '';
+  dreamText = '';
+  interpretation = '';
 
   constructor(private router: Router, private dreamService: DreamService) {}
 
-  clearText(): void {
+  clearText() {
     this.dreamText = '';
     this.interpretation = '';
   }
 
-  navigateToLogin(): void {
+  navigateToLogin() {
     this.router.navigate(['/login']);
   }
 
-  analyzeDream(): void {
-    if (!this.dreamText.trim()) {
-      alert('Please enter a dream first!');
-      return;
-    }
-    this.dreamService.interpretDream(this.dreamText).subscribe({
-      next: (response: string) => {
-        this.interpretation = response;
-        // Prepend interpretation header inside the text box.
-        this.dreamText = "Interpretation:\n\n" + response;
-      },
-      error: (err) => {
-        this.interpretation = 'An error occurred while interpreting your dream.';
-        this.dreamText = this.interpretation;
-        console.error(err);
-      }
-    });
+  analyzeDream() {
+    if (!this.dreamText.trim()) { alert('Please enter a dream first!'); return; }
+
+   this.dreamService.interpretDream(this.dreamText).subscribe({
+     next: res => {                                   // res e obiect, nu string
+       this.interpretation = res.interpretation;
+       this.dreamText = `Interpretation:\n\n${res.interpretation}`;
+     },
+     error: () => {
+       this.interpretation = 'Server error';
+     }
+   });
+
   }
 }

@@ -1,56 +1,47 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterOutlet, Router } from '@angular/router';
-import { DreamService } from '../services/dream.service';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { DreamService } from '../services/dream.service';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [FormsModule, RouterOutlet, CommonModule, HttpClientModule],
+  imports: [FormsModule, CommonModule, HttpClientModule],   // RouterOutlet scos
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
-  dreamText: string = '';
-  interpretation: string = '';
+  dreamText = '';
+  interpretation = '';
 
   constructor(private router: Router, private dreamService: DreamService) {}
 
-  // Clears both the dream text and the interpretation.
-  clearText(): void {
+  clearText() {
     this.dreamText = '';
     this.interpretation = '';
   }
 
-  // Analyzes the dream text via the DreamService.
-  analyzeDream(): void {
+  analyzeDream() {
     if (!this.dreamText.trim()) {
       alert('Please enter a dream first!');
       return;
     }
 
     this.dreamService.interpretDream(this.dreamText).subscribe({
-      next: (response: string) => {
-        this.interpretation = response;
-        // Prepend "Interpretation:" as a header inside the text box.
-        this.dreamText = "Interpretation:\n\n" + response;
+      next: res => {
+        this.interpretation = res.interpretation;
+        // opţional: prepend interpretarea în textarea
+        this.dreamText = `Interpretation:\n\n${res.interpretation}`;
       },
-      error: (err) => {
+      error: () => {
         this.interpretation = 'An error occurred while interpreting your dream.';
-        this.dreamText = this.interpretation;
-        console.error(err);
+        console.error('Dream AI error');
       }
     });
   }
 
-  // Navigation for the side buttons.
-  navigateToJournal(): void {
-    this.router.navigate(['/journal']);
-  }
-
-  navigateToStatistics(): void {
-    this.router.navigate(['/statistics']);
-  }
+  navigateToJournal()    { this.router.navigate(['/journal']); }
+  navigateToStatistics() { this.router.navigate(['/statistics']); }
 }

@@ -4,11 +4,21 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class DreamService {
-  private apiUrl = 'http://localhost:8080/api/dreams/interpret';
+  private api = 'http://localhost:8080/api/dreams';
 
   constructor(private http: HttpClient) {}
 
-  interpretDream(dreamText: string): Observable<string> {
-    return this.http.post(this.apiUrl, { dream: dreamText }, { responseType: 'text' });
+  // src/app/services/dream.service.ts
+  interpretDream(text: string) {
+    return this.http.post<{ interpretation: string; dreamDate: string }>(
+      `${this.api}/interpret`,
+      { dream: text }
+    );
+  }
+
+  getYear(year: number) {                           // <= adaugă dacă lipsea
+    return this.http.get<
+      Record<string, { interpretation: string; dreamDate: string }[]>
+    >(`${this.api}/year/${year}`);
   }
 }
