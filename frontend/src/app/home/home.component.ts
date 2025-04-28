@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
+import { Router } from '@angular/router';
+import { DreamService } from '../services/dream.service';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { DreamService } from '../services/dream.service';
 
 @Component({
   selector: 'app-home',
@@ -13,32 +14,36 @@ import { DreamService } from '../services/dream.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
-  dreamText = '';
-  interpretation = '';
+  dreamText: string = '';
+  interpretation: string = '';
 
   constructor(private router: Router, private dreamService: DreamService) {}
 
-  clearText() {
+  clearText(): void {
     this.dreamText = '';
     this.interpretation = '';
   }
 
-  navigateToLogin() {
+  navigateToLogin(): void {
     this.router.navigate(['/login']);
   }
 
-  analyzeDream() {
-    if (!this.dreamText.trim()) { alert('Please enter a dream first!'); return; }
+  analyzeDream(): void {
+    if (!this.dreamText.trim()) {
+      alert('Please enter a dream first!');
+      return;
+    }
 
-   this.dreamService.interpretDream(this.dreamText).subscribe({
-     next: res => {                                   // res e obiect, nu string
-       this.interpretation = res.interpretation;
-       this.dreamText = `Interpretation:\n\n${res.interpretation}`;
-     },
-     error: () => {
-       this.interpretation = 'Server error';
-     }
-   });
-
+    this.dreamService.interpretDream(this.dreamText).subscribe({
+      next: res => {                                   // ← res e obiect
+        this.interpretation = res.interpretation;
+        this.dreamText = 'Interpretation:\n\n' + res.interpretation;
+      },
+      error: () => {
+        this.interpretation = 'An error occurred while interpreting your dream.';
+        this.dreamText = this.interpretation;
+      }
+    });
   }
+
 }

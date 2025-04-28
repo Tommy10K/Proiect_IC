@@ -1,20 +1,51 @@
-<div *ngIf="message" class="alert">{{ message }}</div>
-
-<form [formGroup]="dreamForm" (ngSubmit)="onSubmit()">
-  <label>
-    Date:
+<!-- === FORMULAR sus, centrat =================================== -->
+<form class="dream-form" [formGroup]="dreamForm" (ngSubmit)="onSubmit()">
+  <label>Date:
     <input type="date" formControlName="dreamDate" />
   </label>
 
-  <label>
-    Title:
+  <label>Title:
     <input type="text" formControlName="title" />
   </label>
 
-  <label>
-    Description:
+  <label>Description:
     <textarea formControlName="description"></textarea>
   </label>
 
   <button type="submit" [disabled]="dreamForm.invalid">Add Dream</button>
 </form>
+
+<!-- mesaj succes/eroare -->
+<div *ngIf="message" class="alert">{{ message }}</div>
+
+<!-- === CALENDAR ================================================= -->
+<h2 class="year-title">Dream Journal {{ year }}</h2>
+
+<div class="year-grid">
+  <ng-container *ngFor="let m of months">
+    <section class="month">
+      <!-- ▶️  folosim array-ul monthNames -->
+      <h3>{{ monthNames[m] }}</h3>
+
+      <div class="days head">
+        <span *ngFor="let d of ['M','T','W','T','F','S','S']">{{ d }}</span>
+      </div>
+
+      <div class="days">
+        <span *ngFor="let _ of [].constructor(pad(m))"></span>
+
+        <button *ngFor="let d of days(m)"
+                [class.has]="has(m,d)"
+                (click)="select(m,d)">
+          {{ d }}
+        </button>
+      </div>
+    </section>
+  </ng-container>
+</div>
+
+<!-- listă vise -->
+<div *ngIf="entries.length" class="entry-list">
+  <h3>{{ selectedDate | date:'fullDate' }}</h3>
+  <ul><li *ngFor="let e of entries">{{ e.interpretation }}</li></ul>
+</div>

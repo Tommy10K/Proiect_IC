@@ -1,68 +1,103 @@
-import { Component, OnInit }     from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
-import { RouterModule }           from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { RouterOutlet, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule }      from '@angular/common';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule
+} from '@angular/forms';
+
 import { DreamEntryService } from '../services/dreamentry.service';
-import { Dream }                 from '../models/dream.model';
-import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-import { AuthService }        from '../services/auth.service';
+import { AuthService }       from '../services/auth.service';
+import { Dream }             from '../models/dream.model';
 
 @Component({
   selector: 'app-journal',
   standalone: true,
-  imports: [FormsModule, RouterOutlet, CommonModule, HttpClientModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './journal.component.html',
   styleUrls: ['./journal.component.scss']
 })
 export class JournalComponent implements OnInit {
+
+  /* ---------- calendar ---------- */
+  year   = 2025;
+  months = Array.from({ length: 12 }, (_, i) => i);   // 0..11
+  monthNames = [
+    'January','February','March','April','May','June',
+    'July','August','September','October','November','December'
+  ];
+
+  map: Record<string, { interpretation: string; dreamDate: string }[]> = {};
+  selectedDate?: string;
+  entries: { interpretation: string; dreamDate: string }[] = [];
+
+  /* ---------- form ---------- */
   dreamForm!: FormGroup;
- 
-  currentUserId: number | null = null;
   message: string | null = null;
 
   constructor(
     private fb: FormBuilder,
-    private dreamService: DreamEntryService,
+    private entrySvc: DreamEntryService,
     private auth: AuthService
   ) {}
 
-  ngOnInit() {
-    this.currentUserId = this.auth.getUserId();
-    console.log('▶ currentUserId =', this.currentUserId);
+  ngOnInit(): void {
+    /* harta vise → calendar */
+    this.refreshYear();
 
+    /* reactive form init */
     this.dreamForm = this.fb.group({
-      dreamDate: ['', Validators.required],
-      title:     ['', [Validators.required, Validators.maxLength(255)]],
+      dreamDate:   ['', Validators.required],
+      title:       ['', [Validators.required, Validators.maxLength(255)]],
       description: ['', Validators.maxLength(2000)]
     });
   }
 
-  onSubmit() {
-    console.log('↪ onSubmit fired, form=', this.dreamForm.value, 'userId=', this.currentUserId);
-    if (this.dreamForm.invalid) return;
+  /* ---------- helpers calendar ---------- */
+  pad = (m: number) => (new Date(this.year, m, 1).getDay() || 7);
 
-    const payload: Dream = {
-      userId: this.currentUserId,
-      ...this.dreamForm.value
+  days = (m: number) =>
+    Array.from(
+      { length: new Date(this.year, m + 1, 0).getDate() },
+      (_, i) => i + 1
+    );
+
+  iso = (m: number, d: number) =>
+    new Date(this.year, m, d).toISOString().substring(0, 10);
+
+  has = (m: number, d: number) => !!this.map[this.iso(m, d)];
+
+  select(m: number, d: number): void {
+    this.selectedDate = this.iso(m, d);
+    this.entries      = this.map[this.selectedDate] || [];
+  }
+
+  /* ---------- submit ---------- */
+  /* ---------- submit ---------- */
+  onSubmit(): void {
+    if (this.dreamForm.invalid) { return; }
+
+    /* ⇣⇣⇣  payload nou – fără userId  ⇣⇣⇣ */
+    const payload = {
+      dreamDate:   this.dreamForm.value.dreamDate,
+      title:       this.dreamForm.value.title,
+      description: this.dreamForm.value.description
     };
 
-    this.dreamService.createDream(payload).subscribe({
-      next: created => {
-        console.log('Saved dream', created);
-        // reset with empty strings so the inputs clear
-        this.dreamForm.reset({
-          dreamDate:   '',
-          title:       '',
-          description: ''
-        });
-        this.message = 'Dream added successfully!';
+    this.entrySvc.createDream(payload).subscribe({
+      next: () => {
+        this.message = 'Dream added!';
+        this.dreamForm.reset({ dreamDate: '', title: '', description: '' });
+        this.refreshYear();              // re-colorează calendarul
       },
-      error: err => {
-        console.error('Create failed', err);
-        this.message = 'Error adding dream';
-      }
+      error: () => (this.message = 'Error adding dream')
     });
+  }
+
+  /* ---------- utils ---------- */
+  private refreshYear(): void {
+    this.entrySvc.getYear(this.year)
+      .subscribe(map => (this.map = map));
   }
 }

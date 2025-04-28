@@ -2,8 +2,13 @@ package com.ITristii.backend.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDate;
 
+@Setter
+@Getter
 public class DreamDTO {
 
     @NotNull
@@ -17,34 +22,4 @@ public class DreamDTO {
 
     @Size(max = 2000)
     private String description;    // full text (optional)
-
-    // ─── Getters & Setters ───────────────────────────────────────────────────
-
-    public Long getUserId() {
-        return userId;
-    }
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public LocalDate getDreamDate() {
-        return dreamDate;
-    }
-    public void setDreamDate(LocalDate dreamDate) {
-        this.dreamDate = dreamDate;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

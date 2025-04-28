@@ -1,1 +1,53 @@
-/* You can add global styles to this file, and also import other style files */
+/* ------------- styles.scss (global) ------------- */
+
+/* reset simplu */
+* { box-sizing: border-box; margin:0; padding:0; }
+
+/* variabile */
+:root {
+  --header-h: 56px;
+  --clr-primary: #4caf50;
+}
+
+/* tipografie fluidă */
+html { font-size: 100%; }
+body { font-family: system-ui, sans-serif; }
+
+h1 { font-size: clamp(1.75rem, 1.4rem + 1vw, 2.5rem); }
+h2 { font-size: clamp(1.25rem, 1.1rem + .6vw, 1.75rem); }
+
+/* container centrator */
+.container {
+  max-width: 960px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+/* butoane generice */
+.btn {
+  padding: .75rem 1.5rem;
+  border-radius: .5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  border: none;
+  transition: background .3s;
+}
+.btn--primary { background: var(--clr-primary); color:#fff; }
+.btn--primary:hover { background: #409a43; }
+
+/* grid simplu pentru calendar */
+.calendar-grid {
+  --size: clamp(2rem, 6vw, 3rem);
+  display: grid;
+  grid-template-columns: repeat(7, var(--size));
+  gap: .25rem;
+  justify-content: center;
+}
+.calendar-grid > div {
+  width: var(--size);
+  height: var(--size);
+  display:flex; align-items:center; justify-content:center;
+  border:1px solid #ddd;
+  font-size: clamp(.75rem, .6rem + .3vw, 1rem);
+}
+.calendar-grid > .has { background:#b2e6b2; }

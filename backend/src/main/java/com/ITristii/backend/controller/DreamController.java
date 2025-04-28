@@ -1,71 +1,48 @@
 package com.ITristii.backend.controller;
 
-import com.ITristii.backend.dto.DreamRequest;
-import com.ITristii.backend.dto.DreamResponse;
 import com.ITristii.backend.model.Dream;
 import com.ITristii.backend.model.User;
 import com.ITristii.backend.repository.DreamRepository;
 import com.ITristii.backend.repository.UserRepository;
 import com.ITristii.backend.service.DreamAiService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(path = "/api/dreams", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping("/api/dreams")
 public class DreamController {
 
-    @Autowired private DreamAiService ai;
-    @Autowired private DreamRepository dreamRepo;
-    @Autowired private UserRepository userRepo;
+    @Autowired
+    private DreamRepository dreamRepository;
 
-    /** interpretează + salvează noul vis */
+    @Autowired
+    private DreamAiService dreamAiService;
+
+    @Autowired
+    private UserRepository userRepository;
+
     @PostMapping("/interpret")
-    public DreamResponse interpret(@RequestBody DreamRequest req,
-                                   Authentication auth) {
-
-        User user = userRepo.findByUsername(auth.getName())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        String interp = ai.interpretDream(req.getDream());
-
-        Dream d = new Dream();
-        d.setUser(user);
-        d.setDreamDate(LocalDate.now());
-        d.setDescription(req.getDream());
-        d.setInterpretation(interp);
-        dreamRepo.save(d);
-
-        return new DreamResponse(interp, d.getDreamDate());
+    public String interpret(@RequestBody Map<String, String> body) {
+        String dreamText = body.get("dream");
+        return dreamAiService.interpretDream(dreamText);
     }
 
-    /** toate visele dintr-un an calendaristic pentru calendarul din frontend */
-    @GetMapping("/year/{year}")
-    public Map<LocalDate, List<DreamResponse>> year(@PathVariable int year,
-                                                    Authentication auth) {
+    @GetMapping
+    public List<Dream> getAll() {
+        return dreamRepository.findAll();
+    }
 
-        User user = userRepo.findByUsername(auth.getName())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    @PostMapping
+    public Dream create(@RequestBody Dream dream, Authentication auth) {
+        User user = userRepository
+                .findByUsername(auth.getName())
+                .orElseThrow();
 
-        LocalDate start = LocalDate.of(year, 1, 1);
-        LocalDate end   = LocalDate.of(year, 12, 31);
-
-        return dreamRepo
-                .findByUserAndDreamDateBetweenOrderByDreamDateDesc(user, start, end)
-                .stream()
-                .collect(Collectors.groupingBy(
-                        Dream::getDreamDate,
-                        LinkedHashMap::new,           // păstrează ordinea cronologică
-                        Collectors.mapping(
-                                d -> new DreamResponse(d.getInterpretation(), d.getDreamDate()),
-                                Collectors.toList()
-                        )));
+        dream.setUser(user);                 // 👈  atașăm userul autenticat
+        return dreamRepository.save(dream);
     }
 }
