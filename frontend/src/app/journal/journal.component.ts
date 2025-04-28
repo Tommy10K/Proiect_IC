@@ -91,7 +91,14 @@ export class JournalComponent implements OnInit {
         this.dreamForm.reset({ dreamDate: '', title: '', description: '' });
         this.refreshYear();              // re-colorează calendarul
       },
-      error: () => (this.message = 'Error adding dream')
+      error: err => {
+          if (err.status === 409) {
+            // mesaj primit de la backend („Ai deja un vis salvat...”)
+            this.message = err.error;
+          } else {
+            this.message = 'Error adding dream';
+          }
+        }
     });
   }
 
