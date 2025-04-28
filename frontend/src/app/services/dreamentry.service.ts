@@ -1,41 +1,45 @@
-// src/app/services/dreamentry.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Dream } from '../models/dream.model';
-import { AuthService } from '../services/auth.service';
+
+/** Modelul receptor pentru un vis din jurnal */
+export interface DreamEntry {
+  id?:           number;
+  title:         string | null;
+  description:   string;
+  interpretation:string;
+  dreamDate:     string;   // "yyyy-MM-dd"
+}
 
 @Injectable({ providedIn: 'root' })
 export class DreamEntryService {
-
   private readonly API = 'http://localhost:8080/api/dreams';
 
-  constructor(
-    private http: HttpClient,
-    private auth: AuthService            // 👈 injectăm token-provider
-  ) {}
+  constructor(private http: HttpClient) {}
 
-  /* ============== Create ================== */
-  createDream(d: Dream) {
-    return this.http.post<Dream>(this.API, d);
+  /** Salvează un vis nou (sau returnează 409 dacă există deja) */
+  createDream(d: {
+    dreamDate:   string;
+    title:       string;
+    description: string;
+  }): Observable<any> {
+    return this.http.post(`${this.API}`, d);
   }
 
-
-  /* ============== Listă simplă pe user ==== */
-  getUserDreams(userId: number) {
-    const token = this.auth.getToken();
-    return this.http.get<Dream[]>(`${this.API}/user/${userId}`, {
-      headers: token ? { Authorization: `Bearer ${token}` } : undefined
-    });
+  /** Listă simplă pe user (opțional) */
+  getUserDreams(userId: number): Observable<DreamEntry[]> {
+    return this.http.get<DreamEntry[]>(`${this.API}/user/${userId}`);
   }
 
-  /* ============== Calendar ================ */
-  getYear(year: number) {
-    const token = this.auth.getToken();
-    return this.http.get<
-      Record<string, { interpretation: string; dreamDate: string }[]>
-    >(`${this.API}/year/${year}`, {
-      headers: token ? { Authorization: `Bearer ${token}` } : undefined
-    });
+  /** Harta anului: zi → array de interpretări */
+  getYear(year: number): Observable<Record<string, DreamEntry[]>> {
+    return this.http.get<Record<string, DreamEntry[]>>(
+      `${this.API}/year/${year}`
+    );
+  }
+
+  /** Aduce detaliile visului pentru o zi anume */
+  getDay(date: string): Observable<DreamEntry> {
+    return this.http.get<DreamEntry>(`${this.API}/date/${date}`);
   }
 }

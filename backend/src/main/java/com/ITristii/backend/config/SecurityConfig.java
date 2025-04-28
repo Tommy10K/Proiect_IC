@@ -1,21 +1,22 @@
 package com.ITristii.backend.config;
+
 import com.ITristii.backend.service.JwtService;
 import com.ITristii.backend.repository.UserRepository;
 import com.ITristii.backend.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.*;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
 @Configuration
 @EnableWebSecurity
@@ -23,7 +24,7 @@ public class SecurityConfig {
 
     @Autowired
     private JwtService jwtService;
-    
+
     @Autowired
     private UserRepository userRepository;
 
@@ -34,16 +35,20 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        // rutele publice
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/dreams/interpret").permitAll()
+                        // calendar: permit pentru GET an și GET zi
+                        .requestMatchers(HttpMethod.GET, "/api/dreams/year/**", "/api/dreams/date/**")
+                        .permitAll()
+                        // restul trebuie autentificat
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .cors(Customizer.withDefaults()); // ✅ CORS în stil nou
+                .cors(Customizer.withDefaults());
 
         return http.build();
     }
-
 
     @Bean
     public UserDetailsService userDetailsService() {

@@ -3,13 +3,11 @@ package com.ITristii.backend.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.time.LocalDate;
-
 @Data
 @AllArgsConstructor
-public class DreamResponse {
+public class DreamDetailsResponse {
     private String title;
     private String description;
     private String interpretation;
-    private LocalDate dreamDate;
+    private String dreamDate;    // yyyy-MM-dd
 }

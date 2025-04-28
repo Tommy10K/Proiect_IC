@@ -1,39 +1,30 @@
-<!-- === FORMULAR sus, centrat =================================== -->
+<!-- FORMULAR ADĂUGARE VIS -->
 <form class="dream-form" [formGroup]="dreamForm" (ngSubmit)="onSubmit()">
   <label>Date:
     <input type="date" formControlName="dreamDate" />
   </label>
-
   <label>Title:
     <input type="text" formControlName="title" />
   </label>
-
   <label>Description:
     <textarea formControlName="description"></textarea>
   </label>
-
   <button type="submit" [disabled]="dreamForm.invalid">Add Dream</button>
 </form>
 
-<!-- mesaj succes/eroare -->
 <div *ngIf="message" class="alert">{{ message }}</div>
 
-<!-- === CALENDAR ================================================= -->
+<!-- CALENDAR ÎN GRID -->
 <h2 class="year-title">Dream Journal {{ year }}</h2>
-
 <div class="year-grid">
   <ng-container *ngFor="let m of months">
     <section class="month">
-      <!-- ▶️  folosim array-ul monthNames -->
       <h3>{{ monthNames[m] }}</h3>
-
       <div class="days head">
         <span *ngFor="let d of ['M','T','W','T','F','S','S']">{{ d }}</span>
       </div>
-
       <div class="days">
         <span *ngFor="let _ of [].constructor(pad(m))"></span>
-
         <button *ngFor="let d of days(m)"
                 [class.has]="has(m,d)"
                 (click)="select(m,d)">
@@ -44,8 +35,28 @@
   </ng-container>
 </div>
 
-<!-- listă vise -->
-<div *ngIf="entries.length" class="entry-list">
+<!-- DETALII VIS SELECTAT -->
+<ng-container *ngIf="selectedDate">
   <h3>{{ selectedDate | date:'fullDate' }}</h3>
-  <ul><li *ngFor="let e of entries">{{ e.interpretation }}</li></ul>
-</div>
+
+  <div *ngIf="entries.length; else noEntry" class="entry-list">
+    <div *ngFor="let e of entries" class="entry-card">
+      <h4>{{ e.title?.trim() || '— No Title —' }}</h4>
+      <p>
+        <strong>Dream:</strong><br>
+        {{ e.description?.trim() || '— No Description —' }}
+      </p>
+      <p>
+        <strong>Interpretation:</strong><br>
+        {{ e.interpretation }}
+      </p>
+    </div>
+  </div>
+
+  <ng-template #noEntry>
+    <div class="no-entry">
+      No dream logged for this day.
+    </div>
+  </ng-template>
+</ng-container>
+

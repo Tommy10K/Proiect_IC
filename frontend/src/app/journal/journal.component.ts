@@ -7,9 +7,7 @@ import {
   ReactiveFormsModule
 } from '@angular/forms';
 
-import { DreamEntryService } from '../services/dreamentry.service';
-import { AuthService }       from '../services/auth.service';
-import { Dream }             from '../models/dream.model';
+import { DreamEntryService, DreamEntry } from '../services/dreamentry.service';
 
 @Component({
   selector: 'app-journal',
@@ -20,33 +18,28 @@ import { Dream }             from '../models/dream.model';
 })
 export class JournalComponent implements OnInit {
 
-  /* ---------- calendar ---------- */
-  year   = 2025;
-  months = Array.from({ length: 12 }, (_, i) => i);   // 0..11
-  monthNames = [
+  year         = new Date().getFullYear();
+  months       = Array.from({ length: 12 }, (_, i) => i);
+  monthNames   = [
     'January','February','March','April','May','June',
     'July','August','September','October','November','December'
   ];
 
-  map: Record<string, { interpretation: string; dreamDate: string }[]> = {};
+  map: Record<string, DreamEntry[]> = {};
   selectedDate?: string;
-  entries: { interpretation: string; dreamDate: string }[] = [];
+  entries: DreamEntry[] = [];
 
-  /* ---------- form ---------- */
   dreamForm!: FormGroup;
   message: string | null = null;
 
   constructor(
     private fb: FormBuilder,
-    private entrySvc: DreamEntryService,
-    private auth: AuthService
+    private entrySvc: DreamEntryService
   ) {}
 
   ngOnInit(): void {
-    /* harta vise → calendar */
     this.refreshYear();
 
-    /* reactive form init */
     this.dreamForm = this.fb.group({
       dreamDate:   ['', Validators.required],
       title:       ['', [Validators.required, Validators.maxLength(255)]],
@@ -54,57 +47,53 @@ export class JournalComponent implements OnInit {
     });
   }
 
-  /* ---------- helpers calendar ---------- */
+  /** calendar helpers */
   pad = (m: number) => (new Date(this.year, m, 1).getDay() || 7);
-
   days = (m: number) =>
-    Array.from(
-      { length: new Date(this.year, m + 1, 0).getDate() },
-      (_, i) => i + 1
-    );
+    Array.from({ length: new Date(this.year, m + 1, 0).getDate() }, (_, i) => i + 1);
 
-  iso = (m: number, d: number) =>
-    new Date(this.year, m, d).toISOString().substring(0, 10);
+  /** Format date as yyyy-MM-dd without timezone issues */
+  iso = (m: number, d: number): string => {
+    const month = (m + 1).toString().padStart(2, '0');
+    const day   = d.toString().padStart(2, '0');
+    return `${this.year}-${month}-${day}`;
+  };
 
-  has = (m: number, d: number) => !!this.map[this.iso(m, d)];
+  has = (m: number, d: number) =>
+    !!this.map[this.iso(m, d)];
 
+  /** click pe zi: aduce datele visului */
   select(m: number, d: number): void {
     this.selectedDate = this.iso(m, d);
-    this.entries      = this.map[this.selectedDate] || [];
+    this.entrySvc.getDay(this.selectedDate!).subscribe({
+      next: e => this.entries = [e],
+      error: () => this.entries = []
+    });
   }
 
-  /* ---------- submit ---------- */
-  /* ---------- submit ---------- */
+  /** submit formular */
   onSubmit(): void {
-    if (this.dreamForm.invalid) { return; }
+    if (this.dreamForm.invalid) return;
 
-    /* ⇣⇣⇣  payload nou – fără userId  ⇣⇣⇣ */
-    const payload = {
-      dreamDate:   this.dreamForm.value.dreamDate,
-      title:       this.dreamForm.value.title,
-      description: this.dreamForm.value.description
-    };
+    const { dreamDate, title, description } = this.dreamForm.value;
+    const payload = { dreamDate, title, description };
 
     this.entrySvc.createDream(payload).subscribe({
       next: () => {
         this.message = 'Dream added!';
-        this.dreamForm.reset({ dreamDate: '', title: '', description: '' });
-        this.refreshYear();              // re-colorează calendarul
+        this.dreamForm.reset({ dreamDate:'', title:'', description:'' });
+        this.refreshYear();
       },
       error: err => {
-          if (err.status === 409) {
-            // mesaj primit de la backend („Ai deja un vis salvat...”)
-            this.message = err.error;
-          } else {
-            this.message = 'Error adding dream';
-          }
-        }
+        this.message = err.status === 409
+          ? err.error
+          : 'Error adding dream';
+      }
     });
   }
 
-  /* ---------- utils ---------- */
   private refreshYear(): void {
     this.entrySvc.getYear(this.year)
-      .subscribe(map => (this.map = map));
+      .subscribe(m => this.map = m);
   }
 }
