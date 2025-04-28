@@ -13,12 +13,10 @@ public class Dream {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /* ------------- relație user ------------ */
     @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id")           // coloana user_id în tabelă
+    @JoinColumn(name = "user_id")
     private User user;
 
-    /* ------------- câmpuri vis ------------- */
     @Column(name = "dream_date", nullable = false)
     private LocalDate dreamDate;
 
@@ -27,4 +25,7 @@ public class Dream {
 
     @Column(columnDefinition = "text")
     private String description;
+
+    @Column(columnDefinition = "text")
+    private String interpretation;
 }

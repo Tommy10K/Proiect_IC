@@ -17,6 +17,13 @@
   font-size: 48px;
   font-weight: bold;
 }
+/* dashboard.component.scss */
+.title-input{
+  width: 100%;
+  padding: .5rem;
+  margin-bottom: .5rem;
+  font-size: 1rem;
+}
 
 .content {
   display: flex;
@@ -106,7 +113,7 @@
   height: 500px;
   font-size: 20px;
   padding: 10px;
-  padding-top: 50px;  
+  padding-top: 50px;
   border: 2px solid #ccc;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);

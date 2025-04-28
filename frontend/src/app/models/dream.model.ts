@@ -3,4 +3,5 @@ export interface Dream {
   dreamDate: string;
   title: string;
   description: string;
+  interpretation?: string;
 }

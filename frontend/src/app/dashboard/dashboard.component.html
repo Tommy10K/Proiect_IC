@@ -9,27 +9,40 @@
   </div>
 
   <div class="three-column-layout">
+    <!-- --------------- coloana stângă ---------------- -->
     <div class="left-column">
       <button class="side-button" (click)="navigateToJournal()">Journal</button>
       <button class="side-button" (click)="navigateToStatistics()">Statistics</button>
     </div>
-    
+
+    <!-- --------------- coloana principală ------------ -->
     <div class="middle-column">
-      <!-- Add ngClass to the text area so that when an interpretation is shown it receives a different styling -->
-      <textarea 
-        class="text-box" 
-        [ngClass]="{'interpreted': interpretation}"
-        placeholder="Type your dream here, user" 
-        [(ngModel)]="dreamText">
+
+      <!--  📝 titlul (opţional) -->
+      <input class="title-input"
+             type="text"
+             placeholder="Dream title (optional)"
+             [(ngModel)]="dreamTitle"
+             *ngIf="!interpretation" />
+
+      <!--  ✍️ descrierea visului  -->
+      <textarea class="text-box"
+                placeholder="Type your dream here, user"
+                [(ngModel)]="dreamText"
+                *ngIf="!interpretation">
       </textarea>
+
+      <!--  🔮 interpretarea afişată după răspunsul AI -->
+      <div *ngIf="interpretation" class="interpretation">
+        {{ interpretation }}
+      </div>
     </div>
-    
-    <div class="right-column">
-      <!-- (Ignored as requested) -->
-    </div>
+
+    <!-- --------------- coloana dreaptă (goală) ------- -->
+    <div class="right-column"></div>
   </div>
 
-  <!-- The button toggles its action and label based on whether an interpretation exists -->
+  <!--  butonul care îşi schimbă eticheta / acţiunea -->
   <button class="analyze-button" (click)="interpretation ? clearText() : analyzeDream()">
     {{ interpretation ? 'Analyze Another Dream' : 'Analyze Your Dream' }}
   </button>

@@ -19,6 +19,9 @@ public class DreamAiService {
     @Value("${huggingface.api.key}")
     private String apiKey;
 
+    private static final org.slf4j.Logger log =
+            org.slf4j.LoggerFactory.getLogger(DreamAiService.class);
+
     public String interpretDream(String dream) {
         try {
             RestTemplate restTemplate = new RestTemplate();
@@ -33,8 +36,8 @@ public class DreamAiService {
 
             HttpEntity<Map<String, String>> request = new HttpEntity<>(body, headers);
             ResponseEntity<String> response = restTemplate.postForEntity(apiUrl, request, String.class);
-
             String json = response.getBody();
+
             if (json.contains("generated_text")) {
                 int start = json.indexOf("### Interpretation:");
                 if (start != -1) {
@@ -52,6 +55,7 @@ public class DreamAiService {
 
             return "Interpretation not available.";
         } catch (Exception e) {
+            log.error("Interpret dream failed", e);
             return "Eroare la interpretarea visului: " + e.getMessage();
         }
     }
