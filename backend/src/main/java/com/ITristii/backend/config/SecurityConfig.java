@@ -35,12 +35,18 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        // permiţi CORS preflight peste tot
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
                         // rutele publice
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/dreams/interpret").permitAll()
-                        // calendar: permit pentru GET an și GET zi
-                        .requestMatchers(HttpMethod.GET, "/api/dreams/year/**", "/api/dreams/date/**")
-                        .permitAll()
+                        // calendar (GET an & GET zi)
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/dreams/year/**",
+                                "/api/dreams/date/**"
+                        ).permitAll()
+
                         // restul trebuie autentificat
                         .anyRequest().authenticated()
                 )
@@ -49,6 +55,7 @@ public class SecurityConfig {
 
         return http.build();
     }
+
 
     @Bean
     public UserDetailsService userDetailsService() {

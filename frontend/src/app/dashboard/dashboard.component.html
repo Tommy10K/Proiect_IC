@@ -1,5 +1,6 @@
 <div class="header">
   <h1 class="website-name">Dreamora</h1>
+  <button class="logout-button" (click)="logout()">Logout</button>
 </div>
 
 <div class="content">
@@ -9,41 +10,39 @@
   </div>
 
   <div class="three-column-layout">
-    <!-- --------------- coloana stângă ---------------- -->
     <div class="left-column">
       <button class="side-button" (click)="navigateToJournal()">Journal</button>
       <button class="side-button" (click)="navigateToStatistics()">Statistics</button>
     </div>
 
-    <!-- --------------- coloana principală ------------ -->
     <div class="middle-column">
+      <!-- Dream title input -->
+      <input
+        class="title-input"
+        type="text"
+        placeholder="Dream title (optional)"
+        [(ngModel)]="dreamTitle"
+        *ngIf="!interpretation" />
 
-      <!--  📝 titlul (opţional) -->
-      <input class="title-input"
-             type="text"
-             placeholder="Dream title (optional)"
-             [(ngModel)]="dreamTitle"
-             *ngIf="!interpretation" />
-
-      <!--  ✍️ descrierea visului  -->
-      <textarea class="text-box"
-                placeholder="Type your dream here, user"
-                [(ngModel)]="dreamText"
-                *ngIf="!interpretation">
+      <!-- Dream description -->
+      <textarea
+        class="text-box"
+        placeholder="Type your dream here, user"
+        [(ngModel)]="dreamText"
+        *ngIf="!interpretation">
       </textarea>
 
-      <!--  🔮 interpretarea afişată după răspunsul AI -->
+      <!-- AI interpretation -->
       <div *ngIf="interpretation" class="interpretation">
         {{ interpretation }}
       </div>
     </div>
 
-    <!-- --------------- coloana dreaptă (goală) ------- -->
     <div class="right-column"></div>
   </div>
 
-  <!--  butonul care îşi schimbă eticheta / acţiunea -->
-  <button class="analyze-button" (click)="interpretation ? clearText() : analyzeDream()">
+  <button class="analyze-button"
+          (click)="interpretation ? clearText() : analyzeDream()">
     {{ interpretation ? 'Analyze Another Dream' : 'Analyze Your Dream' }}
   </button>
 </div>
