@@ -16,9 +16,10 @@ import { AuthService } from '../services/auth.service';
 })
 export class DashboardComponent {
 
-  dreamTitle     = '';     // ← add this
+  dreamTitle     = '';
   dreamText      = '';
   interpretation = '';
+  showTitle = false;
 
   constructor(
     private router: Router,
@@ -32,6 +33,8 @@ export class DashboardComponent {
       return;
     }
 
+    this.showTitle = false;
+
     const payload = {
       title: this.dreamTitle.trim() || undefined,
       description: this.dreamText
@@ -41,7 +44,6 @@ export class DashboardComponent {
       .subscribe({
         next: (res: InterpretResponse) => {
           this.interpretation = res.interpretation;
-          // show the result and reset fields
           this.dreamText = `Interpretation:\n\n${res.interpretation}`;
         },
         error: err => {
@@ -56,6 +58,7 @@ export class DashboardComponent {
     this.dreamTitle     = '';   // ← clear title too
     this.dreamText      = '';
     this.interpretation = '';
+    this.showTitle = false;
   }
 
   navigateToJournal()    { this.router.navigate(['/journal']); }

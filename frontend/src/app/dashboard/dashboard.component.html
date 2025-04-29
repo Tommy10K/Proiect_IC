@@ -17,12 +17,18 @@
 
     <div class="middle-column">
       <!-- Dream title input -->
-      <input
-        class="title-input"
+      <!-- toggle button -->
+      <button class="title-toggle btn--outline" *ngIf="!showTitle && !interpretation" (click)="showTitle = true">
+        + Add a title to your dream
+      </button>
+
+      <!-- title input, revealed only when toggled -->
+      <input  class="title-input"
+        *ngIf="showTitle && !interpretation"
         type="text"
-        placeholder="Dream title (optional)"
-        [(ngModel)]="dreamTitle"
-        *ngIf="!interpretation" />
+        placeholder="Dream title"
+        [(ngModel)]="dreamTitle" />
+
 
       <!-- Dream description -->
       <textarea
