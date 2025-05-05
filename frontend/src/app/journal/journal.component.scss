@@ -21,3 +21,106 @@
 .year-title { text-align:center; margin:1rem 0; }
 
 /* (restul CSS calendar rămâne neschimbat) */
+
+/* ─── Two-column year grid ─────────────────────────────────────────────────── */
+.year-grid {
+  display: grid;
+  /* 2 columns, equal width */
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;           /* space between months */
+  padding: 0 1rem;     /* page‐padding */
+}
+
+.month {
+  background: #f9f9f9;
+  padding: 0.75rem;
+  border-radius: 0.4rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.month h3 {
+  text-align: center;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+/* ─── Days grid (7-wide) ──────────────────────────────────────────────────── */
+.month .days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.25rem;
+}
+
+.month .days button {
+  width: 100%;
+  padding: 0.3rem 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 0.2rem;
+}
+
+/* highlight days with entries */
+.month .days button.has {
+  background: var(--clr-accent); /* or #4caf50 */
+  color: var(--clr-bg-2);        /* white */
+}
+
+/* hover effect */
+.month .days button:hover:not(.has) {
+  background: var(--clr-accent-light); /* a light accent */
+}
+
+/* ─── Modal backdrop ─────────────────────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+/* ─── Modal content box ──────────────────────────────────────────────────────── */
+.modal-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--clr-bg-1);
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  z-index: 1001;
+}
+
+/* ─── “×” close button ───────────────────────────────────────────────────────── */
+.modal-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* ─── Entry card inside modal ───────────────────────────────────────────────── */
+.modal-content .entry-card {
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #ddd;
+}
+
+/* ─── “No entry” message ────────────────────────────────────────────────────── */
+.modal-content .no-entry {
+  text-align: center;
+  color: var(--clr-text-light);
+  font-style: italic;
+}

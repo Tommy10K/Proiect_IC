@@ -32,6 +32,8 @@ export class JournalComponent implements OnInit {
   dreamForm!: FormGroup;
   message: string | null = null;
 
+  showDetailModal = false;
+
   constructor(
     private fb: FormBuilder,
     private entrySvc: DreamEntryService
@@ -69,6 +71,17 @@ export class JournalComponent implements OnInit {
       next: e => this.entries = [e],
       error: () => this.entries = []
     });
+  }
+
+  openDetail(m: number, d: number): void {
+    this.select(m, d);
+    this.showDetailModal = true;
+  }
+
+  closeDetail(): void {
+    this.showDetailModal = false;
+    this.selectedDate = undefined;
+    this.entries = [];
   }
 
   /** submit formular */
