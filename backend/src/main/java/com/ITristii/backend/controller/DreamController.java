@@ -1,13 +1,15 @@
     package com.ITristii.backend.controller;
 
+    import com.ITristii.backend.dto.DreamDTO;
     import com.ITristii.backend.dto.DreamResponse;
-    import com.ITristii.backend.dto.InterpretResponse;
-    import com.ITristii.backend.dto.DreamRequest;
+    import com.ITristii.backend.dto.InterpretRequest;
     import com.ITristii.backend.model.Dream;
     import com.ITristii.backend.model.User;
     import com.ITristii.backend.repository.DreamRepository;
     import com.ITristii.backend.repository.UserRepository;
     import com.ITristii.backend.service.DreamAiService;
+
+    import jakarta.validation.Valid;
     import lombok.RequiredArgsConstructor;
     import org.springframework.http.HttpStatus;
     import org.springframework.http.ResponseEntity;
@@ -31,20 +33,33 @@
 
         /** interpretare simplă (Home) */
         @PostMapping("/interpret")
-        public ResponseEntity<InterpretResponse> interpret(@RequestBody String dream) {
-            String interp = dreamAiService.interpretDream(dream);
-            return ResponseEntity.ok(new InterpretResponse(interp, LocalDate.now().toString()));
+        public ResponseEntity<DreamResponse> interpret(@RequestBody InterpretRequest req) {
+                String text = Optional.ofNullable(req.getDescription()).orElse("");
+                if (text.isBlank()) {
+                return ResponseEntity.badRequest().build();
+                }
+                String interpretation = dreamAiService.interpretDream(text);
+                LocalDate date = Optional.ofNullable(req.getDreamDate())
+                                        .filter(d -> !d.isBlank())
+                                        .map(LocalDate::parse)
+                                        .orElse(LocalDate.now());
+                return ResponseEntity.ok(new DreamResponse(
+                req.getTitle(), 
+                text, 
+                interpretation, 
+                date
+                ));
         }
 
         /** upsert + interpretare (Dashboard) */
         @PostMapping("/interpret-save")
         @Transactional
-        public ResponseEntity<InterpretResponse> interpretAndSave(
-                @RequestBody DreamRequest req,
-                Principal principal
+        public ResponseEntity<DreamResponse> interpretAndSave(
+            @RequestBody InterpretRequest req,
+             Principal principal
         ) {
             // 1. validate
-            String desc = Optional.ofNullable(req.getDescription()).orElse(req.getDream());
+            String desc = Optional.ofNullable(req.getDescription()).orElse("");
             if (desc == null || desc.isBlank()) return ResponseEntity.badRequest().build();
 
             LocalDate date = Optional.ofNullable(req.getDreamDate())
@@ -70,7 +85,12 @@
             dreamRepository.save(dream);
 
             // 5. răspuns
-            return ResponseEntity.ok(new InterpretResponse(interpretation, date.toString()));
+            return ResponseEntity.ok(new DreamResponse(
+                dream.getTitle(),
+                dream.getDescription(),
+                dream.getInterpretation(),
+                dream.getDreamDate()
+                ));
         }
 
         @GetMapping("/year/{year}")
@@ -127,7 +147,7 @@
                     .orElseThrow();
             dream.setUser(user);
             if (dreamRepository.existsByUserAndDreamDate(user, dream.getDreamDate())) {
-                String msg = "Ai deja un vis salvat la data " + dream.getDreamDate();
+                String msg = "You already have a dream saved on " + dream.getDreamDate();
                 return ResponseEntity.status(HttpStatus.CONFLICT).body(msg);
             }
             return ResponseEntity.ok(dreamRepository.save(dream));
