@@ -3,6 +3,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+
 import com.ITristii.backend.model.User;
 
 @Setter
@@ -28,4 +31,12 @@ public class Dream {
 
     @Column(columnDefinition = "text")
     private String interpretation;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "dream_tags",
+        joinColumns = @JoinColumn(name = "dream_id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private Set<Tag> tags = new HashSet<>();
 }

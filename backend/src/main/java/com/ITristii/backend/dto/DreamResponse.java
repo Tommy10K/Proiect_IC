@@ -2,6 +2,7 @@ package com.ITristii.backend.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import java.util.List;
 
 import java.time.LocalDate;
 
@@ -12,4 +13,5 @@ public class DreamResponse {
     private String description;
     private String interpretation;
     private LocalDate dreamDate;
+    private List<String> tags;
 }

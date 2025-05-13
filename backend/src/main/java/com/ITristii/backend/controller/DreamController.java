@@ -5,6 +5,7 @@
     import com.ITristii.backend.dto.InterpretRequest;
     import com.ITristii.backend.model.Dream;
     import com.ITristii.backend.model.User;
+    import com.ITristii.backend.model.Tag;
     import com.ITristii.backend.repository.DreamRepository;
     import com.ITristii.backend.repository.UserRepository;
     import com.ITristii.backend.service.DreamAiService;
@@ -47,7 +48,8 @@
                 req.getTitle(), 
                 text, 
                 interpretation, 
-                date
+                date,
+                Collections.emptyList() 
                 ));
         }
 
@@ -89,7 +91,8 @@
                 dream.getTitle(),
                 dream.getDescription(),
                 dream.getInterpretation(),
-                dream.getDreamDate()
+                dream.getDreamDate(),
+                dream.getTags().stream().map(Tag::getName).toList() 
                 ));
         }
 
@@ -112,7 +115,8 @@
                                             d.getTitle(),
                                             d.getDescription(),
                                             d.getInterpretation(),
-                                            d.getDreamDate()
+                                            d.getDreamDate(),
+                                            d.getTags().stream().map(Tag::getName).toList()
                                     ),
                                     Collectors.toList()
                             )
@@ -135,7 +139,8 @@
                     dream.getTitle(),
                     dream.getDescription(),
                     dream.getInterpretation(),
-                    dream.getDreamDate()
+                    dream.getDreamDate(),
+                    dream.getTags().stream().map(Tag::getName).toList()
             );
             return ResponseEntity.ok(resp);
         }

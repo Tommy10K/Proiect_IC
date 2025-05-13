@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import java.util.List;
 
 import java.time.LocalDate;
 
@@ -22,4 +23,8 @@ public class DreamDTO {
 
     @Size(max = 2000)
     private String description;    // full text (optional)
+
+    @NotNull
+    @Size(max = 5)
+    private List<String> tags;
 }
