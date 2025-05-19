@@ -32,11 +32,10 @@ public class Dream {
     @Column(columnDefinition = "text")
     private String interpretation;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "dream_tags",
-        joinColumns = @JoinColumn(name = "dream_id"),
-        inverseJoinColumns = @JoinColumn(name = "tag_id")
-    )
+    @ManyToMany(fetch = FetchType.EAGER,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "dream_tags",
+           joinColumns = @JoinColumn(name = "dream_id"),
+           inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags = new HashSet<>();
 }

@@ -8,6 +8,10 @@ import com.ITristii.backend.repository.UserRepository;
 import com.ITristii.backend.repository.TagRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.Set;
@@ -19,6 +23,7 @@ public class DreamService {
     private final DreamRepository dreamRepo;
     private final UserRepository userRepo;
     private final TagRepository tagRepo;
+    private static final Logger log = LoggerFactory.getLogger(DreamService.class);
 
     public DreamService(DreamRepository dreamRepo, UserRepository userRepo, TagRepository tagRepo) {
         this.dreamRepo = dreamRepo;
@@ -37,16 +42,13 @@ public class DreamService {
         dream.setTitle(dto.getTitle());
         dream.setDescription(dto.getDescription());
 
-        if (dto.getTags() != null && dto.getTags().size() > 5) {
-            throw new IllegalArgumentException("A dream can have at most 5 tags");
-        }
+        Tag noTags = resolveTag("no_tags");
+        log.info("DEBUG: resolveTag(\"no_tags\") → id={}", noTags.getId());
 
-        if (dto.getTags() != null) {
-            Set<Tag> tagEntities = dto.getTags().stream()
-                .map(this::resolveTag)     // helper below
-                .collect(Collectors.toSet());
-            dream.setTags(tagEntities);
-        }
+        Set<Tag> tagEntities = new HashSet<>();
+        tagEntities.add(noTags);
+
+        dream.setTags(tagEntities);
 
         return dreamRepo.save(dream);
     }

@@ -9,10 +9,18 @@
     import com.ITristii.backend.repository.DreamRepository;
     import com.ITristii.backend.repository.UserRepository;
     import com.ITristii.backend.service.DreamAiService;
+import com.ITristii.backend.service.DreamService;
+import com.ITristii.backend.service.TagService;
 
-    import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import jakarta.validation.Valid;
     import lombok.RequiredArgsConstructor;
-    import org.springframework.http.HttpStatus;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
     import org.springframework.http.ResponseEntity;
     import org.springframework.transaction.annotation.Transactional;
     import org.springframework.web.bind.annotation.*;
@@ -145,16 +153,22 @@
             return ResponseEntity.ok(resp);
         }
 
+        private final TagService tagService;
+        private static final Logger log = LoggerFactory.getLogger(DreamService.class);
         /** create pentru jurnal (opțional) */
         @PostMapping
         public ResponseEntity<?> create(@RequestBody Dream dream, Principal principal) {
             User user = userRepository.findByUsername(principal.getName())
-                    .orElseThrow();
-            dream.setUser(user);
-            if (dreamRepository.existsByUserAndDreamDate(user, dream.getDreamDate())) {
-                String msg = "You already have a dream saved on " + dream.getDreamDate();
-                return ResponseEntity.status(HttpStatus.CONFLICT).body(msg);
-            }
-            return ResponseEntity.ok(dreamRepository.save(dream));
+                .orElseThrow();
+                dream.setUser(user);
+
+                Tag noTags = tagService.getByNameOrThrow("no_tags");
+                dream.setTags(Set.of(noTags));
+
+                if (dreamRepository.existsByUserAndDreamDate(user, dream.getDreamDate())) {
+                        String msg = "You already have a dream saved on " + dream.getDreamDate();
+                        return ResponseEntity.status(HttpStatus.CONFLICT).body(msg);
+                }
+                return ResponseEntity.ok(dreamRepository.save(dream));
         }
     }

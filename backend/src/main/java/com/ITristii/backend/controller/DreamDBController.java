@@ -7,6 +7,8 @@ import com.ITristii.backend.service.DreamService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -14,6 +16,7 @@ import java.util.List;
 @RequestMapping("/api/db/dreams")
 public class DreamDBController {
     private final DreamService dreamService;
+    private static final Logger log = LoggerFactory.getLogger(DreamService.class);
 
     public DreamDBController(DreamService dreamService) {
         this.dreamService = dreamService;
@@ -21,6 +24,7 @@ public class DreamDBController {
 
     @PostMapping
     public ResponseEntity<Dream> add(@Valid @RequestBody DreamDTO dto) {
+        log.info("DEBUG: ADD");
         return ResponseEntity
           .status(201)
           .body(dreamService.createDream(dto));
