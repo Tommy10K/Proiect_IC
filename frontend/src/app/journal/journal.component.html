@@ -49,6 +49,9 @@
         <p *ngIf="e.interpretation">
           <strong>Interpretation:</strong><br>{{ e.interpretation }}
         </p>
+        <p *ngIf="e.tags?.length">
+          <strong>Tags:</strong> {{ e.tags.join(', ') }}
+        </p>
       </div>
     </div>
 
@@ -57,5 +60,3 @@
     </ng-template>
   </div>
 </ng-container>
-
-
