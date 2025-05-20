@@ -36,7 +36,9 @@
   font-size: 20px;
   padding: 10px;
   padding-top: 50px;
-  border: 2px solid #ccc;
+  background-color: #3e4a6a;
+  border: 2px solid #3e4a6a;
+  color:            #f3f2f8;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   resize: none;
@@ -46,7 +48,8 @@
 
 /* When an interpretation is shown, add a creamy background */
 .text-box.interpreted {
-  background-color: #f1f1f1;
+  background-color: #3e4a6a;
+  color:            #f3f2f8;
 }
 
 /* Analyze button styling */

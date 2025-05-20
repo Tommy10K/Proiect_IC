@@ -21,12 +21,14 @@
   .title-toggle {
     margin-bottom: .5rem;
     font-size: .9rem;
-    background-color: #fff;
-      color: #000;
-      border-color: #fff ;
+    background-color: #3e4a6a;
+    color: #f3f2f8;
+    border-color: #3e4a6a ;
   }
 
   .title-input {
+    background-color: #3e4a6a;
+    color: #f3f2f8;
     text-align: center;
     width: 100%;
     max-width: 420px;
@@ -34,6 +36,10 @@
     padding: 0 0.75rem;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
+  }
+
+  .dashboard-message h2 {
+    color: #f3f2f8;
   }
 
 .content {
@@ -123,16 +129,23 @@
 }
 
 .text-box {
+  background-color: #3e4a6a;
+  color: #f3f2f8;
   width: 90%;
   height: 500px;
   font-size: 20px;
   padding: 10px;
   padding-top: 50px;
-  border: 2px solid #ccc;
+  border: 1px solid #5a6887;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   resize: none;
   text-align: center;
+}
+
+.text-box::placeholder {
+  color:    #b0aed1;  
+  opacity:  .85;
 }
 
 .left-column {
@@ -180,5 +193,16 @@
   border-radius: 5px;
   transition: background-color 0.2s ease-in-out, box-shadow 0.2s;
     cursor: pointer;
+}
+
+.interpretation {
+  background: rgba(0, 0, 0, 0.5);  // 50% opacity black
+  color:      #f3f2f8;            // white-lavender text
+  padding:    1.5rem;
+  border-radius: .75rem;
+  max-width:  800px;               // or fit your layout
+  margin:     0 auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  line-height: 1.6;
 }
 
