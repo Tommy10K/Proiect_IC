@@ -9,6 +9,7 @@ export interface DreamEntry {
   description:   string;
   interpretation:string;
   dreamDate:     string;   // "yyyy-MM-dd"
+  tags: string[];
 }
 
 @Injectable({ providedIn: 'root' })
