@@ -1,125 +1,188 @@
 /* ---------------- styles.scss (global) ---------------- */
 /* reset minimal */
-*{box-sizing:border-box;margin:0;padding:0}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 /* ---------- Theme variables ---------- */
-:root{
+:root {
   /* 🎨 modifici doar aceste 6 culori și tot UI-ul se actualizează */
-  --clr-bg-1:#f8fafc;
-  --clr-bg-2:#ffffff;
-  --clr-accent:#7c3aed;
-  --clr-accent-dark:#5b21b6;
-  --clr-text:#1e293b;
-  --clr-text-light:#64748b;
+  --clr-bg-1: #f8fafc;
+  --clr-bg-2: #ffffff;
+  --clr-accent: #7c3aed;
+  --clr-accent-dark: #724fce;
+  --clr-text: #1e293b;
+  --clr-text-light: #64748b;
 
-  --radius:.75rem;
-  --shadow:0 4px 16px rgba(0,0,0,.08);
-  --transition:all .25s ease
+  --radius: .75rem;
+  --shadow: 0 4px 16px rgba(0, 0, 0, .08);
+  --transition: all .25s ease;
 }
 
 /* DARK-mode (moștenit din sistem) */
-@media(prefers-color-scheme:dark){
-  :root{
-    --clr-bg-1:#0f172a;
-    --clr-bg-2:#1e293b;
-    --clr-text:#f1f5f9;
-    --clr-text-light:#94a3b8;
-    --clr-accent:#a78bfa;
-    --clr-accent-dark:#7c3aed;
-    --shadow:0 4px 16px rgba(0,0,0,.40)
+@media (prefers-color-scheme: dark) {
+  :root {
+    --clr-bg-1: #0f172a;
+    --clr-bg-2: #1e293b;
+    --clr-text: #f1f5f9;
+    --clr-text-light: #94a3b8;
+    --clr-accent: #a78bfa;
+    --clr-accent-dark: #7c3aed;
+    --shadow: 0 4px 16px rgba(0, 0, 0, .40);
   }
 }
 
 /* ---------- Tipografie ---------- */
-html{font-size:100%}
-body{
-  font-family:system-ui,sans-serif;
-  background:var(--clr-bg-1);
-  color:var(--clr-text);
-  line-height:1.5
+html { font-size: 100%; }
+body {
+  font-family: system-ui, sans-serif;
+  background: var(--clr-bg-1);
+  color: var(--clr-text);
+  line-height: 1.5;
 }
-h1{font-size:clamp(1.75rem,1.4rem + 1vw,2.5rem)}
-h2{font-size:clamp(1.25rem,1.1rem + .6vw,1.75rem)}
+h1 { font-size: clamp(1.75rem, 1.4rem + 1vw, 2.5rem); }
+h2 { font-size: clamp(1.25rem, 1.1rem + .6vw, 1.75rem); }
 
 /* ---------- Container ---------- */
-.container{
-  max-width:960px;
-  margin-inline:auto;
-  padding-inline:1rem
+.container {
+  max-width: 960px;
+  margin-inline: auto;
+  padding-inline: 1rem;
 }
 
 /* ---------- Card helper ---------- */
-.card{
-  background:var(--clr-bg-2);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow)
+.card {
+  background: var(--clr-bg-2);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
 
 /* ---------- Buttons ---------- */
-.btn{
-  padding:.75rem 1.5rem;
-  border-radius:var(--radius);
-  cursor:pointer;
-  font-size:1rem;
-  border:none;
-  transition:var(--transition)
+.btn {
+  padding: .75rem 1.5rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 1rem;
+  border: none;
+  transition: var(--transition);
 }
-.btn--primary{
-  background:var(--clr-accent);
-  color:#fff
+.btn--primary {
+  background: var(--clr-accent);
+  color: #fff;
 }
-.btn--primary:hover{background:var(--clr-accent-dark)}
-.btn--outline{
-  background:transparent;
-  border:2px solid var(--clr-accent);
-  color:var(--clr-accent)
+.btn--primary:hover { background: var(--clr-accent-dark); }
+.btn--outline {
+  background: transparent;
+  border: 2px solid var(--clr-accent);
+  color: var(--clr-accent);
 }
-.btn--outline:hover{background:var(--clr-accent);color:#fff}
+.btn--outline:hover { background: var(--clr-accent); color: #fff; }
 
 /* ---------- Calendar grid ---------- */
-.calendar-grid{
-  --size:clamp(2rem,6vw,3rem);
-  display:grid;
-  grid-template-columns:repeat(7,var(--size));
-  gap:.25rem;
-  justify-content:center
+.calendar-grid {
+  --size: clamp(2rem, 6vw, 3rem);
+  display: grid;
+  grid-template-columns: repeat(7, var(--size));
+  gap: .25rem;
+  justify-content: center;
 }
-.calendar-grid>div{
-  width:var(--size);
-  height:var(--size);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border:1px solid #d1d5db;
-  font-size:clamp(.75rem,.6rem + .3vw,1rem);
-  border-radius:var(--radius)
+.calendar-grid > div {
+  width: var(--size);
+  height: var(--size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #d1d5db;
+  font-size: clamp(.75rem, .6rem + .3vw, 1rem);
+  border-radius: var(--radius);
 }
-.calendar-grid>.has{background:#b2e6b2}
+.calendar-grid > .has { background: #b2e6b2; }
 
 /* -------------------------------------------------------
    🔧  OVERRIDE “hard-coded” culori din componente locale
    ----------------------------------------------------- */
-app-home,app-dashboard,app-login,app-journal{
+app-home,
+app-dashboard,
+app-login,
+app-journal {
   /* header */
-  .header{
-    background:var(--clr-accent-dark)!important;
-    color:var(--clr-bg-2)!important
+  .header {
+    background: var(--clr-accent-dark) !important;
+    color: var(--clr-bg-2) !important;
   }
   /* butoane principale */
   .login-button,
   .sidebar-btn,
-  .analyze-button{
+  .analyze-button {
     @extend .btn--primary;
   }
   /* fundal content central */
-  .content{
-    background:var(--clr-bg-1)!important;
+  .content {
+    background: var(--clr-bg-1) !important;
   }
   /* textarea / textbox */
-  .text-box{
-    background:var(--clr-bg-2);
-    border-radius:var(--radius);
-    box-shadow:var(--shadow);
-    color:var(--clr-text)
+  .text-box {
+    background: var(--clr-bg-2);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    color: var(--clr-text);
   }
+}
+/* ── make html, body and app-root fill the viewport ── */
+html, body, app-root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── strip out the white “.content” panels on home & dashboard ── */
+app-home .content,
+app-dashboard .content {
+  background: transparent !important;
+}
+
+/* ── full-screen, fixed starry background on <body> ── */
+body {
+  position: relative;
+}
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: -1;
+
+  /* point at the file in src/assets via the built-in dev server */
+  background-image: url('assets/ChatGPT Image May 20, 2025, 01_42_46 AM.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-attachment: fixed;
+
+  /* subtle purple overlay */
+  background-color: rgba(90, 0, 90, 0.4);
+  background-blend-mode: multiply;
+}
+
+
+/* toate butoanele .btn--primary devin mov închis */
+.btn--primary {
+  background-color: #7C3AED !important;
+}
+.btn--primary:hover {
+  background-color: #5B21B6 !important;
+}
+
+/* dacă vrei și outline-urile */
+.btn--outline {
+  border-color: #7C3AED !important;
+  color: #7C3AED !important;
+}
+.btn--outline:hover {
+  background-color: #7C3AED !important;
+  color: #fff !important;
+}
+
+/* forțăm textul interpretării să fie alb */
+app-dashboard .interpretation,
+app-home .interpretation {
+  color: #fff !important;
 }
