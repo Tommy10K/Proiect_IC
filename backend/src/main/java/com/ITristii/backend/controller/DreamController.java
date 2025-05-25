@@ -84,14 +84,26 @@ import org.springframework.http.HttpStatus;
             // 3. ai
             String interpretation = dreamAiService.interpretDream(desc);
 
+            List<String> allTags = tagService.allTagNames();
+            List<String> chosen  = dreamAiService.chooseTags(desc, allTags);
+                if (chosen.size() > 5) {
+                chosen = chosen.subList(0, 5);
+                }
+                // convert names → Tag entities (throws if tag not found)
+                Set<Tag> tagEntities = chosen.stream()
+                        .map(tagService::getByNameOrThrow)
+                        .collect(Collectors.toSet());
+
             // 4. upsert
             Dream dream = dreamRepository.findByUserIdAndDreamDate(user.getId(), date)
                     .orElseGet(Dream::new);
+
             dream.setUser(user);
             dream.setDreamDate(date);
             dream.setTitle(req.getTitle());
             dream.setDescription(desc);
             dream.setInterpretation(interpretation);
+            dream.setTags(tagEntities);
             dreamRepository.save(dream);
 
             // 5. răspuns
@@ -100,7 +112,7 @@ import org.springframework.http.HttpStatus;
                 dream.getDescription(),
                 dream.getInterpretation(),
                 dream.getDreamDate(),
-                dream.getTags().stream().map(Tag::getName).toList() 
+                chosen 
                 ));
         }
 
