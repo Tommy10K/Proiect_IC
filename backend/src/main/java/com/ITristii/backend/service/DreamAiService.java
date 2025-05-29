@@ -48,6 +48,8 @@ public class DreamAiService {
             Choose between 1 and 5 tags for the following dream.
             Only select from this list: %s.
             Provide your answer *only* as a JSON array of strings (e.g. ["tag1","tag2"]).
+            DO NOT CREATE NEW TAGS, ony use the ones from that list.
+            If absolutely no tags apply, return no_tags.
 
             ### Dream:
             %s

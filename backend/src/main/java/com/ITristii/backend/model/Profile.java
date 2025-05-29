@@ -4,29 +4,29 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter @Getter
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = "name"))
-public class Tag {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+@Table(name = "profile")
+@Getter @Setter
+public class Profile {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 50)
+    @Column(unique = true, nullable = false)
     private String name;
 
     @Column(name = "emotional_tone", nullable = false)
-    private int emotionalTone = 0;
+    private int emotionalTone;
 
     @Column(name = "rationality_creativity", nullable = false)
-    private int rationalityCreativity = 0;
+    private int rationalityCreativity;
 
     @Column(name = "social_orientation", nullable = false)
-    private int socialOrientation = 0;
+    private int socialOrientation;
 
     @Column(name = "activity_level", nullable = false)
-    private int activityLevel = 0;
+    private int activityLevel;
 
     @Column(name = "control_level", nullable = false)
-    private int controlLevel = 0;
+    private int controlLevel;
 }
-

@@ -1,1 +1,40 @@
-<h1>statistics coming soon dreamers</h1>
+<!-- src/app/statistics/statistics.component.html -->
+<div class="statistics-wrapper">
+  <div class="stats-container">
+
+    <ng-container *ngIf="loading">
+      <p>Loading personality…</p>
+    </ng-container>
+
+    <ng-container *ngIf="!loading">
+
+      <h2>Your Dream Personality is:</h2>
+      <p *ngIf="topMatch">
+        {{ topMatch.name }}  
+        ({{ (topMatch.similarity * 100) | number:'1.0-0' }}%)
+      </p>
+      <p *ngIf="!topMatch">
+        No clear personality match.
+      </p>
+
+      <h3>Archetype Matches</h3>
+      <ul>
+        <li *ngFor="let m of matches">
+            <div class="match-row">
+            <div class="match-header">
+                <span class="match-label">{{ m.name }}</span>
+                <span class="match-percent">{{ (m.similarity * 100) | number:'1.0-0' }}%</span>
+            </div>
+            <div class="match-bar">
+                <div class="match-fill" [style.width.%]="m.similarity * 100"></div>
+            </div>
+            </div>
+        </li>
+      </ul>
+
+
+
+    </ng-container>
+
+  </div>
+</div>
