@@ -8,31 +8,45 @@
 
     <ng-container *ngIf="!loading">
 
-      <h2>Your Dream Personality is:</h2>
-      <p *ngIf="topMatch">
-        {{ topMatch.name }}  
-        ({{ (topMatch.similarity * 100) | number:'1.0-0' }}%)
-      </p>
-      <p *ngIf="!topMatch">
-        No clear personality match.
-      </p>
+
+      <div *ngIf="topMatch" class="top-archetype">
+
+        <div class="top-text">
+          <h2>Your Dream Personality is:</h2>
+          <p class="top-name">
+            {{ topMatch.name }}
+            <span class="top-percent">
+              ({{ (topMatch.similarity * 100) | number:'1.0-0' }}%)
+            </span>
+          </p>
+        </div>
+        <img
+          [src]="'assets/' + topMatch.name.toLowerCase() + '.png'"
+          [alt]="topMatch.name"
+          class="archetype-img"
+        />
+      </div>
+
+      <ng-container *ngIf="!topMatch">
+        <p>No clear personality match.</p>
+      </ng-container>
 
       <h3>Archetype Matches</h3>
       <ul>
         <li *ngFor="let m of matches">
-            <div class="match-row">
+          <div class="match-row">
             <div class="match-header">
-                <span class="match-label">{{ m.name }}</span>
-                <span class="match-percent">{{ (m.similarity * 100) | number:'1.0-0' }}%</span>
+              <span class="match-label">{{ m.name }}</span>
+              <span class="match-percent">
+                {{ (m.similarity * 100) | number:'1.0-0' }}%
+              </span>
             </div>
             <div class="match-bar">
-                <div class="match-fill" [style.width.%]="m.similarity * 100"></div>
+              <div class="match-fill" [style.width.%]="m.similarity * 100"></div>
             </div>
-            </div>
+          </div>
         </li>
       </ul>
-
-
 
     </ng-container>
 

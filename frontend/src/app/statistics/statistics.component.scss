@@ -5,7 +5,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: transparent; /* allow page background through */
+  background: transparent; /* let the global background image show */
 }
 
 .statistics-wrapper {
@@ -16,46 +16,59 @@
 }
 
 .stats-container {
-  background-color: rgba(0, 0, 0, 0.6); /* dark gray overlay */
+  background-color: rgba(0, 0, 0, 0.6); /* semi-transparent dark overlay */
   padding: 2rem;
   border-radius: 0.5rem;
   max-width: 400px;
   width: 90%;
   text-align: center;
+  color: #fff; /* ensure all text inside is white by default */
 }
 
-.stats-container p,
-.stats-container h2,
-.stats-container h3,
-.stats-container li {
-  color: #fff; /* ensure all text is white */
+/* ── Top archetype section ───────────────────────────────────────────────────── */
+
+.top-archetype {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+
+  .archetype-img {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    margin-bottom: 0.5rem;
+  }
+
+  .top-text {
+    h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: #fff;
+    }
+    .top-name {
+      margin: 0.5rem 0 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+
+      .top-percent {
+        font-weight: 400;
+        margin-left: 0.5rem;
+        font-size: 1.25rem;
+        color: #ddd;
+      }
+    }
+  }
 }
 
-.stats-container p {
-  margin: 0.5rem 0;
-  font-size: 1.5rem;
-}
-
-.stats-container h2 {
-  margin-bottom: 0.5rem;
-  font-size: 1.5rem;
-}
+/* ── Archetype matches list ───────────────────────────────────────────────────── */
 
 .stats-container h3 {
-  margin-top: 2rem;  /* more spacing above "Archetype Matches" */
-  margin-bottom: 0.5rem;
+  margin-top: 0; 
+  margin-bottom: 1rem;
   font-size: 1.3rem;
-}
-
-.stats-container ul {
-  list-style: none;
-  padding: 0;
-  margin: 1rem 0 0;
-}
-
-.stats-container li {
-  margin: 0.25rem 0;
-  font-size: 1rem;
+  color: #fff;
 }
 
 .match-row {
@@ -71,7 +84,6 @@
 
 .match-label,
 .match-percent {
-  color: #fff;
   font-weight: 500;
   font-size: 1rem;
 }
@@ -86,6 +98,13 @@
 
 .match-fill {
   height: 100%;
-  background-color: #a855f7; /* tailwind purple-500 */
+  background-color: #a855f7; /* purple (tailwind purple-500) */
   transition: width 0.4s ease;
+}
+
+/* ensure list markers are removed */
+.stats-container ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
