@@ -128,20 +128,82 @@ Suggestion: Evaluate a current goal or project you feel judged on. Break it into
   };
 
   // Determină categoria de somn
+  /**
+   * Determină calitatea somnului pe baza orelor de somn și a numărului de treziri.
+   * Returnează 'good', 'moderate' sau 'poor'.
+   */
   private categorizeSleep(hours: number, awakenings: number): 'good' | 'moderate' | 'poor' {
-    if (hours >= 7 && awakenings <= 1) return 'good';
-    if (hours >= 6 && hours < 7 && awakenings <= 2) return 'moderate';
-    return 'poor';
+    // Dacă orele sunt foarte mari (>9) sau foarte mici (<4), marcăm ca "poor" (prea mult sau prea puțin somn)
+    if (hours < 4 || hours > 9) {
+      return 'poor';
+    }
+
+    // Cazuri clare de "good":
+    // - 8–9 ore și 0–1 treziri
+    // - 7–8 ore și 0 treziri
+    if ((hours >= 8 && hours <= 9 && awakenings <= 1) ||
+        (hours >= 7 && hours < 8 && awakenings === 0)) {
+      return 'good';
+    }
+
+    // Cazuri clare de "poor":
+    // - sub 5 ore, orice număr de treziri
+    // - între 5 și 6 ore, dar >2 treziri
+    // - 6–7 ore și >3 treziri
+    if (
+      hours < 5 ||
+      (hours >= 5 && hours < 6 && awakenings > 2) ||
+      (hours >= 6 && hours < 7 && awakenings > 3)
+    ) {
+      return 'poor';
+    }
+
+    // În orice alt caz, considerăm somnul "moderate"
+    // Exemple incluse:
+    // - 7–8 ore și 1–2 treziri
+    // - 6–7 ore și 1–3 treziri
+    // - 5–6 ore și <=2 treziri
+    return 'moderate';
   }
 
+
   // Determină categoria emoțională
+  /**
+   * Determină categoria emoțională (low, moderate, high)
+   * pe baza scorurilor de stres, anxietate și dispoziție.
+   * 1 = foarte jos / foarte bună dispoziție, 5 = foarte sus / dispoziție foarte proastă
+   */
   private categorizeEmotion(stress: number, anxiety: number, mood: number): 'low' | 'moderate' | 'high' {
-    // Inversăm mood, deoarece 1=foarte jos iar 5=foarte sus
-    const avg = (stress + anxiety + (6 - mood)) / 3;
-    if (avg <= 2) return 'low';
-    if (avg <= 3.5) return 'moderate';
-    return 'high';
+    // 1. Dacă oricare dintre stres sau anxietate = 5 → high
+    if (stress === 5 || anxiety === 5) {
+      return 'high';
+    }
+
+    // 2. Dacă dispoziția = 1 (foarte bună) și restul sunt <= 2 → low
+    if (mood === 1 && stress <= 2 && anxiety <= 2) {
+      return 'low';
+    }
+
+    // 3. Dacă două dintre valorile (stres, anxietate, 6 - mood) sunt foarte mari → high
+    //    Observație: 6 - mood => valoare inversată (1=>5, 5=>1) pentru a semnifica "problema emoțională"
+    const invertedMood = 6 - mood;
+    let highCount = 0;
+    if (stress >= 4) highCount++;
+    if (anxiety >= 4) highCount++;
+    if (invertedMood >= 4) highCount++;
+    if (highCount >= 2) {
+      return 'high';
+    }
+
+    // 4. Dacă toate valorile sunt (stres <= 2) && (anxiety <= 2) && (invertedMood <= 2) → low
+    if (stress <= 2 && anxiety <= 2 && invertedMood <= 2) {
+      return 'low';
+    }
+
+    // 5. În orice altă combinație → moderate
+    return 'moderate';
   }
+
 
   // Metodă apelată la click pe "Generate Report"
   generateReport(): void {

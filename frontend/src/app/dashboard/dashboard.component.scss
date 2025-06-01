@@ -258,17 +258,30 @@
   color: var(--clr-bg-2);
   transform: translate(-50%, -50%) scale(1.08);
 }
-
 .quiz-card {
   border: 1px solid #ddd;
   border-radius: 6px;
   padding: 16px;
   margin-top: 20px;
   background-color: #fafafa;
+
+  /* Centrare conținut */
+  text-align: center;
 }
 
 .quiz-card h3 {
   margin-top: 0;
+  /* Mărim titlul și îngroșăm un pic */
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.quiz-card p {
+  /* Mărim puțin textul descriptiv și centram */
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 12px;
 }
 
 .btn-quiz {
@@ -280,6 +293,9 @@
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
+
+  /* Pentru a centra butonul sub text */
+  display: inline-block;
 }
 
 .btn-quiz:hover {
