@@ -48,4 +48,12 @@
           (click)="interpretation ? clearText() : analyzeDream()">
     {{ interpretation ? 'Analyze Another Dream' : 'Analyze Your Dream' }}
   </button>
+
+  <div class="quiz-card">
+    <h3>Dream Quiz</h3>
+    <p>
+      Completează un scurt quiz despre somn și vise; vei primi un raport text direct pe aceeași pagină de quiz.
+    </p>
+    <button class="btn-quiz" routerLink="/quiz">Take Dream Quiz</button>
+  </div>
 </div>

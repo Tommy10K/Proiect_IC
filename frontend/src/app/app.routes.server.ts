@@ -7,4 +7,5 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'journal', renderMode: RenderMode.Prerender },
   { path: 'statistics', renderMode: RenderMode.Prerender },
   { path: 'info', renderMode: RenderMode.Prerender },
+  { path: 'quiz', renderMode: RenderMode.Prerender },
 ];

@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 import { DreamService, InterpretResponse } from '../services/dream.service';
 import { AuthService } from '../services/auth.service';
@@ -10,7 +11,7 @@ import { AuthService } from '../services/auth.service';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [FormsModule, CommonModule, HttpClientModule],
+  imports: [FormsModule, CommonModule, RouterLink],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })

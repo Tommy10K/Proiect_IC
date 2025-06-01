@@ -1,0 +1,349 @@
+/* src/app/dream-quiz/dream-quiz.component.css */
+
+/* -----------------------------
+   1) Wrapper-ul paginii – fără modificări aici
+   ----------------------------- */
+.dream-quiz-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* -----------------------------
+   2) Card-ul central (Quiz + Raport)
+   ----------------------------- */
+.quiz-card {
+  width: 90%;               /* Extindem la 90% din viewport pentru mai mult spațiu */
+  max-width: 700px;         /* Mărim max-width ca formularele și raportul să aibă loc */
+  background: linear-gradient(
+    135deg,
+    rgba(87, 46, 229, 0.75) 0%,
+    rgba(98, 0, 234, 0.75) 50%,
+    rgba(43, 0, 119, 0.75) 100%
+  );
+  border-radius: 16px;
+  padding: 24px 28px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  box-sizing: border-box;
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  position: relative;
+}
+
+/* Overlay de blur mic pentru efect subtil */
+.quiz-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(4px);
+  background: rgba(255, 255, 255, 0.05);
+  z-index: 0;
+}
+
+/* Asigurăm că tot conținutul din interior e deasupra overlay-ului */
+.quiz-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* -----------------------------
+   3) Titlul paginii ( Dream Quiz )
+   ----------------------------- */
+.quiz-title {
+  margin: 0;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #f1f1f1;
+}
+
+/* -----------------------------
+   4) Formularul (quiz-form)
+   ----------------------------- */
+.quiz-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* -----------------------------
+   5) Întrebările (question)
+   ----------------------------- */
+.question {
+  display: flex;
+  flex-direction: column;
+}
+
+/* -----------------------------
+   6) Label-urile întrebărilor
+   ----------------------------- */
+.question label {
+  font-size: 1rem;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #f1f1f1;
+}
+
+/* -----------------------------
+   7) Input-urile de tip text / number
+   ----------------------------- */
+.input-field {
+  padding: 10px 14px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.25);
+  color: #0f0f0f;
+  transition: background-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.input-field::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.input-field:focus {
+  background-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+/* -----------------------------
+   8) Radio buttons (radio-group)
+   ----------------------------- */
+/* Wrapper-ul grupului de radio-uri */
+.radio-group {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Eticheta fiecărui radio button */
+.radio-label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+/* Ascundem adevăratul input radio */
+.radio-label input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Cercul propriu-zis, fixăm dimensiunea și linia pe verticală */
+.radio-label .radio-circle {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  line-height: 36px;      /* pentru a centra numeralul pe verticală */
+  text-align: center;     /* pentru a centra numeralul pe orizontală */
+  font-size: 1rem;
+  color: #0f0f0f;         /* numeral negru */
+  background-color: rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* Când radio e bifat, schimbăm culoarea de fundal și textul */
+.radio-label input[type="radio"]:checked + .radio-circle {
+  background-color: #ffffff;
+  color: #572EE5;
+}
+
+/* Efectul de hover asupra radio-urilor */
+.radio-label:hover .radio-circle {
+  background-color: rgba(255, 255, 255, 0.55);
+}
+
+/* -----------------------------
+   9) Checkbox-uri (checkbox-group)
+   ----------------------------- */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.checkbox-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  font-size: 0.95rem;
+  color: #f1f1f1;
+  cursor: pointer;
+}
+
+.checkbox-label input {
+  margin-right: 6px;
+  width: 18px;
+  height: 18px;
+  accent-color: #ffcc00; /* checkbox galben intens */
+}
+
+/* -----------------------------
+   10) Butonul “Generate Report”
+   ----------------------------- */
+.btn-generate {
+  margin-top: 16px;
+  padding: 12px 20px;
+  background-color: #ffcc00;
+  color: #310c00;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  align-self: center;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-generate:hover {
+  background-color: #e6b800;
+}
+
+.btn-generate:active {
+  transform: translateY(1px);
+}
+
+/* -----------------------------
+   11) Containerul pentru “Raport”
+   ----------------------------- */
+.report-container {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 12px;       /* puțin spațiu deasupra */
+}
+
+/* Titlul raportului */
+.report-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #f1f1f1;
+  text-align: center;
+}
+
+
+.report-content {
+  /* Fundal ușor translucid peste gradient */
+  background-color: rgba(255, 255, 255, 0.20);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  padding: 16px;
+
+  /* Mărește spațiul pe lățime: acum ocupă toată lățimea cardului minus 32px (padding). */
+  width: calc(100% - 32px);
+
+  /* Elimină limita anterioară de înălțime, dar setează un maxim pentru scroll vertical */
+  max-height: 600px;
+
+  /* Scroll vertical, dar ascunde scroll orizontal */
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  /* Aici forțăm ruperea rândurilor lungi, astfel încât să nu apară scroll orizontal */
+  white-space: pre-wrap;       /* păstrează indentările și șirurile noi, dar rupe liniile prea lungi */
+  word-wrap: break-word;       /* rupe cuvintele prea lungi care nu încap pe un rând */
+  box-sizing: border-box;
+
+  /* Font monospace pentru lizibilitate “tip consolă” */
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.25rem;
+  color: #f1f1f1;
+}
+
+/* Dacă ai și <pre> separat, te asiguri că și acesta moștenește wrap-ul */
+.report-content pre {
+  margin: 0;               /* elimină orice margină implicită a pre */
+  white-space: pre-wrap;   /* forțează ruperea liniilor în interiorul <pre> */
+  word-wrap: break-word;
+}
+
+
+
+
+/* -----------------------------
+   12) Butonul “Back to Quiz”
+   ----------------------------- */
+.btn-back {
+  padding: 12px 20px;
+  background-color: #ff4444;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  align-self: center;
+  transition: background-color 0.2s, transform 0.1s;
+  margin-bottom: 8px;    /* ușor spațiu la final */
+}
+
+.btn-back:hover {
+  background-color: #cc0000;
+}
+
+.btn-back:active {
+  transform: translateY(1px);
+}
+
+/* -----------------------------
+   13) Responsive (sub 480px)
+   ----------------------------- */
+@media (max-width: 480px) {
+  .quiz-card {
+    padding: 16px 20px;
+  }
+
+  .quiz-title {
+    font-size: 1.6rem;
+    margin-bottom: 16px;
+  }
+
+  .input-field {
+    font-size: 0.95rem;
+  }
+
+  .radio-label {
+    width: 32px;
+    height: 32px;
+  }
+
+  .radio-label .radio-circle {
+    font-size: 0.9rem;
+    line-height: 32px;
+  }
+
+  .checkbox-label {
+    font-size: 0.9rem;
+  }
+
+  .btn-generate,
+  .btn-back {
+    font-size: 0.95rem;
+    padding: 10px 18px;
+  }
+}

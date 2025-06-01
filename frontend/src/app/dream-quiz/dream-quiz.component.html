@@ -1,0 +1,224 @@
+<!-- src/app/dream-quiz/dream-quiz.component.html -->
+<div class="dream-quiz-wrapper">
+  <div class="quiz-card">
+    <!-- Titlu -->
+    <h1 class="quiz-title">Dream Quiz</h1>
+
+    <!-- FORMULAR (apare doar dacă report e gol) -->
+    <form *ngIf="!report" (ngSubmit)="generateReport()" class="quiz-form">
+      <!-- 1. Ore de somn -->
+      <div class="question">
+        <label for="sleepHours">1. How many hours do you sleep on average per night?</label>
+        <input
+          type="number"
+          id="sleepHours"
+          [(ngModel)]="sleepHours"
+          name="sleepHours"
+          min="0"
+          max="24"
+          required
+          class="input-field"
+          placeholder="e.g. 7"
+        />
+      </div>
+
+      <!-- 2. Număr de treziri -->
+      <div class="question">
+        <label for="nightAwakenings">2. How many times do you wake up per night?</label>
+        <input
+          type="number"
+          id="nightAwakenings"
+          [(ngModel)]="nightAwakenings"
+          name="nightAwakenings"
+          min="0"
+          max="10"
+          required
+          class="input-field"
+          placeholder="e.g. 1"
+        />
+      </div>
+
+      <!-- 3. Minute până la adormire -->
+      <div class="question">
+        <label for="timeToFall">3. How many minutes does it take you to fall asleep?</label>
+        <input
+          type="number"
+          id="timeToFall"
+          [(ngModel)]="timeToFall"
+          name="timeToFall"
+          min="0"
+          max="120"
+          required
+          class="input-field"
+          placeholder="e.g. 15"
+        />
+      </div>
+
+      <!-- 4. Scor stres (radio 1–5) -->
+      <div class="question">
+        <label>4. How stressed have you felt this week?</label>
+        <div class="radio-group">
+          <label *ngFor="let val of [1,2,3,4,5]" class="radio-label">
+            <input
+              type="radio"
+              name="stressLevel"
+              [value]="val"
+              [(ngModel)]="stressLevel"
+              required
+            />
+            <span class="radio-circle">{{ val }}</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- 5. Scor anxietate (radio 1–5) -->
+      <div class="question">
+        <label>5. How anxious were you in your dreams?</label>
+        <div class="radio-group">
+          <label *ngFor="let val of [1,2,3,4,5]" class="radio-label">
+            <input
+              type="radio"
+              name="anxietyLevel"
+              [value]="val"
+              [(ngModel)]="anxietyLevel"
+              required
+            />
+            <span class="radio-circle">{{ val }}</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- 6. Scor dispoziție (radio 1–5) -->
+      <div class="question">
+        <label>6. How would you rate your overall mood this week?</label>
+        <div class="radio-group">
+          <label *ngFor="let val of [1,2,3,4,5]" class="radio-label">
+            <input
+              type="radio"
+              name="moodLevel"
+              [value]="val"
+              [(ngModel)]="moodLevel"
+              required
+            />
+            <span class="radio-circle">{{ val }}</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- 7. Simboluri onirice -->
+      <div class="question checkbox-group">
+        <label>
+          7. Which of these dream symbols did you encounter?
+          <span class="small-note">(Select all that apply)</span>
+        </label>
+        <div class="checkbox-row">
+          <!-- Simboluri originale -->
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              value="falling"
+              (change)="onSymbolChange($event)"
+              [checked]="symbols.includes('falling')"
+            />
+            Falling
+          </label>
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              value="water"
+              (change)="onSymbolChange($event)"
+              [checked]="symbols.includes('water')"
+            />
+            Water (murky/clear)
+          </label>
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              value="fire"
+              (change)="onSymbolChange($event)"
+              [checked]="symbols.includes('fire')"
+            />
+            Fire
+          </label>
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              value="darkness"
+              (change)="onSymbolChange($event)"
+              [checked]="symbols.includes('darkness')"
+            />
+            Darkness
+          </label>
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              value="flying"
+              (change)="onSymbolChange($event)"
+              [checked]="symbols.includes('flying')"
+            />
+            Flying
+          </label>
+
+          <!-- Simboluri noi (total 10) -->
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              value="beingChased"
+              (change)="onSymbolChange($event)"
+              [checked]="symbols.includes('beingChased')"
+            />
+            Being Chased
+          </label>
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              value="losingTeeth"
+              (change)="onSymbolChange($event)"
+              [checked]="symbols.includes('losingTeeth')"
+            />
+            Losing Teeth
+          </label>
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              value="naked"
+              (change)="onSymbolChange($event)"
+              [checked]="symbols.includes('naked')"
+            />
+            Being Naked
+          </label>
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              value="death"
+              (change)="onSymbolChange($event)"
+              [checked]="symbols.includes('death')"
+            />
+            Death
+          </label>
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              value="exam"
+              (change)="onSymbolChange($event)"
+              [checked]="symbols.includes('exam')"
+            />
+            Taking an Exam
+          </label>
+        </div>
+      </div>
+
+      <!-- Buton generare raport -->
+      <button type="submit" class="btn-generate">Generate Report</button>
+    </form>
+
+    <!-- RAPORTUL (afișat doar dacă report nu e gol) -->
+    <div *ngIf="report" class="report-container">
+      <h2 class="report-title">Your Report</h2>
+      <div class="report-content">
+        <pre>{{ report }}</pre>
+      </div>
+      <button class="btn-back" (click)="report = ''">Back to Quiz</button>
+    </div>
+  </div>
+</div>

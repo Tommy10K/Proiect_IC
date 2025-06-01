@@ -5,6 +5,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { JournalComponent } from './journal/journal.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { InfoComponent } from './info/info.component';
+import { DreamQuizComponent } from './dream-quiz/dream-quiz.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -13,4 +14,5 @@ export const routes: Routes = [
   { path: 'journal', component: JournalComponent },
   { path: 'statistics', component: StatisticsComponent },
   { path: 'info', component: InfoComponent },
+  { path: 'quiz', component: DreamQuizComponent },
 ];
