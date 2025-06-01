@@ -1,0 +1,113 @@
+/* src/app/info/info.component.scss */
+
+/*  ____________________________________________
+    *  Fundal și suprapunere
+   ____________________________________________ */
+
+/* Amplică la 100% pentru a putea vedea fundalul animat */
+:host {
+  display: block;
+  min-height: 100vh;
+  position: relative;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
+/* Title-ul general al paginii */
+.info-title {
+  font-size: clamp(2rem, 2.5vw, 3rem);
+  color: var(--clr-bg-2);
+  text-align: center;
+  margin-bottom: 2rem;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Container pentru lista de capitole */
+.chapters-container {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* _______________________________________________
+   Stil pentru fiecare card de capitol
+  _______________________________________________ */
+.chapter-card {
+  background-color: rgba(255, 255, 255, 0.10); /* ușor transparent, ca să se vadă stelele dedesubt */
+  border-radius: var(--radius);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transition: background 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Butonul capitolului (întreaga zonă clickabilă) */
+.chapter-button {
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  text-align: left;
+  padding: 1rem 1.5rem;
+  font-size: 1.1rem;
+  color: var(--clr-bg-2);
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+/* Când butonul e 'open', schimbăm culoarea textului puțin */
+.chapter-button:hover,
+.chapter-button:focus {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: var(--clr-accent);
+}
+
+/* Săgeata de la capăt (rotate când open) */
+.arrow {
+  display: inline-block;
+  transition: transform 0.3s ease;
+  font-size: 1.2rem;
+}
+.arrow.open {
+  transform: rotate(180deg);
+}
+
+/* Conținutul capitolului (viziune extinsă) */
+.chapter-content {
+  padding: 1rem 1.5rem;
+  background-color: rgba(0, 0, 0, 0.25);
+  color: var(--clr-bg-2);
+  line-height: 1.6;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  animation: fadeInContent 0.4s ease-in-out;
+}
+
+/* Animarea conținutului când apare */
+@keyframes fadeInContent {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* _______________________________________________
+  Responsiv: pe ecrane foarte mici, mai micim fontul butoanelor
+  _______________________________________________ */
+@media (max-width: 480px) {
+  .chapter-button {
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+  }
+  .info-title {
+    font-size: 2.2rem;
+  }
+}

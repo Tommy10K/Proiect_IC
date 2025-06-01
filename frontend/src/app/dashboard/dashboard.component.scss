@@ -144,7 +144,7 @@
 }
 
 .text-box::placeholder {
-  color:    #b0aed1;  
+  color:    #b0aed1;
   opacity:  .85;
 }
 
@@ -205,4 +205,56 @@
   box-shadow: 0 4px 12px rgba(0,0,0,0.4);
   line-height: 1.6;
 }
+.info-button {
+  /* Trimite butonul central în header */
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%);
 
+  /* Dimensiune și spațiere */
+  font-size: 1.25rem;          /* mai mare decât butoanele obișnuite */
+  padding: 0.75rem 2rem;       /* padding generos pe orizontală */
+  border-radius: var(--radius);
+  border: 3px solid var(--clr-accent);  /* chenar mai gros, accentuat */
+  background: var(--clr-bg-2);
+  color: var(--clr-accent-dark);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  z-index: 1;  /* să apară deasupra header-ului */
+
+  /* Dacă header are `overflow: hidden`, ajustează z-index-ul sau fă-l `position: relative` */
+}
+.info-button {
+  /* Poziționare absolută în interiorul header */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* Dimensiune și spațiere */
+  font-size: 1.25rem;              /* text puțin mai mare */
+  padding: 0.75rem 2rem;           /* padding mai generos */
+  border-radius: var(--radius);
+
+  /* Background și text vizibil fără hover */
+  background-color: var(--clr-accent);
+  color: var(--clr-bg-2);
+  border: 3px solid var(--clr-accent-dark);
+
+  /* Umbra pentru a ieși în evidență peste header */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  z-index: 1;
+}
+
+.info-button:hover {
+  /* Întunecăm puțin și facem zoom la hover */
+  background-color: var(--clr-accent-dark);
+  border-color: var(--clr-text);
+  color: var(--clr-bg-2);
+  transform: translate(-50%, -50%) scale(1.08);
+}

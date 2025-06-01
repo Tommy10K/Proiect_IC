@@ -68,4 +68,7 @@ export class DashboardComponent {
     this.auth.logout();
     this.router.navigate(['/']);
   }
+navigateToInfo(): void {
+    this.router.navigate(['/info']);
+  }
 }

@@ -1,0 +1,28 @@
+<!-- src/app/info/info.component.html -->
+<div class="info-wrapper">
+  <h1 class="info-title">Dreamopedia</h1>
+
+  <div class="chapters-container">
+    <!-- Listează toate capitolele sub formă de carduri -->
+    <ng-container *ngFor="let ch of chapters">
+      <div class="chapter-card" id="chapter-{{ ch.id }}">
+        <button
+          class="chapter-button"
+          (click)="selectChapter(ch.id)"
+        >
+          {{ ch.title }}
+          <!-- Afișăm săgeată sus/jos în funcție de starea deschis/închis -->
+          <span class="arrow" [class.open]="selectedId === ch.id">
+            ▼
+          </span>
+        </button>
+        <div
+          class="chapter-content"
+          *ngIf="selectedId === ch.id"
+        >
+          <p [innerHTML]="ch.content"></p>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
