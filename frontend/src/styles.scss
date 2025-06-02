@@ -147,8 +147,11 @@ body::before {
   content: "";
   position: fixed;
   top: 0; left: 0;
-  width: 100%; height: 100%;
+  width: 100vh; height: 100vw;
   z-index: -1;
+
+  transform: rotate(-90deg) translateX(-100%);
+  transform-origin: top left;
 
   /* point at the file in src/assets via the built-in dev server */
   background-image: url('assets/ChatGPT Image May 20, 2025, 01_42_46 AM.png');

@@ -41,19 +41,19 @@
       </div>
     </div>
 
-    <div class="right-column"></div>
+    <div class="right-column">
+      <div class="quiz-card">
+        <h3>Dream Quiz</h3>
+        <p>
+          Take our quick sleep‐and‐dream quiz and instantly see your personalized report!
+        </p>
+        <button class="btn-quiz" routerLink="/quiz">Take Dream Quiz</button>
+      </div>
+    </div>
   </div>
 
   <button class="analyze-button"
           (click)="interpretation ? clearText() : analyzeDream()">
     {{ interpretation ? 'Analyze Another Dream' : 'Analyze Your Dream' }}
   </button>
-
-  <div class="quiz-card">
-    <h3>Dream Quiz</h3>
-    <p>
-      Take our quick sleep‐and‐dream quiz and instantly see your personalized report!
-    </p>
-    <button class="btn-quiz" routerLink="/quiz">Take Dream Quiz</button>
-  </div>
 </div>

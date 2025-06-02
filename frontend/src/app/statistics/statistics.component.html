@@ -1,16 +1,9 @@
 <!-- src/app/statistics/statistics.component.html -->
 <div class="statistics-wrapper">
-  <div class="stats-container">
-
-    <ng-container *ngIf="loading">
-      <p>Loading personality…</p>
-    </ng-container>
-
-    <ng-container *ngIf="!loading">
-
-
-      <div *ngIf="topMatch" class="top-archetype">
-
+  <!-- ─────────────── Left Card: Archetypes ─────────────── -->
+  <div class="stats-card" *ngIf="!loading">
+    <ng-container *ngIf="topMatch; else noMatchLeft">
+      <div class="top-archetype">
         <div class="top-text">
           <h2>Your Dream Personality is:</h2>
           <p class="top-name">
@@ -27,12 +20,8 @@
         />
       </div>
 
-      <ng-container *ngIf="!topMatch">
-        <p>No clear personality match.</p>
-      </ng-container>
-
-      <h3>Archetype Matches</h3>
-      <ul>
+      <h3 class="section-title">Archetype Matches</h3>
+      <ul class="matches-list">
         <li *ngFor="let m of matches">
           <div class="match-row">
             <div class="match-header">
@@ -47,8 +36,92 @@
           </div>
         </li>
       </ul>
-
     </ng-container>
 
+    <ng-template #noMatchLeft>
+      <p class="no-match-text">No clear personality match.</p>
+    </ng-template>
   </div>
+
+  <!-- ─────────────── Right Card: Axes ─────────────── -->
+  <div class="axes-card" *ngIf="!loading && userProfile">
+    <h3 class="section-title">Your Dream Profile</h3>
+
+    <!-- Emotional Tone → bar -->
+    <div class="axis-row">
+      <div class="axis-header">
+        <span class="axis-label">Emotional Tone</span>
+        <span class="axis-value">{{ userProfile.emotionalTone | number:'1.2-2' }}</span>
+      </div>
+      <div class="axis-bar">
+        <div
+          class="axis-fill"
+          [style.width.%]="((userProfile.emotionalTone + 5) / 10) * 100"
+        ></div>
+      </div>
+    </div>
+
+    <!-- Rationality/Creativity → bar -->
+    <div class="axis-row">
+      <div class="axis-header">
+        <span class="axis-label">Rationality/Creativity</span>
+        <span class="axis-value">{{ userProfile.rationalityCreativity | number:'1.2-2' }}</span>
+      </div>
+      <div class="axis-bar">
+        <div
+          class="axis-fill"
+          [style.width.%]="((userProfile.rationalityCreativity + 5) / 10) * 100"
+        ></div>
+      </div>
+    </div>
+
+    <!-- Social Orientation → bar -->
+    <div class="axis-row">
+      <div class="axis-header">
+        <span class="axis-label">Social Orientation</span>
+        <span class="axis-value">{{ userProfile.socialOrientation | number:'1.2-2' }}</span>
+      </div>
+      <div class="axis-bar">
+        <div
+          class="axis-fill"
+          [style.width.%]="((userProfile.socialOrientation + 5) / 10) * 100"
+        ></div>
+      </div>
+    </div>
+
+    <!-- Activity Level → bar -->
+    <div class="axis-row">
+      <div class="axis-header">
+        <span class="axis-label">Activity Level</span>
+        <span class="axis-value">{{ userProfile.activityLevel | number:'1.2-2' }}</span>
+      </div>
+      <div class="axis-bar">
+        <div
+          class="axis-fill"
+          [style.width.%]="((userProfile.activityLevel + 5) / 10) * 100"
+        ></div>
+      </div>
+    </div>
+
+    <!-- Control Level → bar -->
+    <div class="axis-row">
+      <div class="axis-header">
+        <span class="axis-label">Control Level</span>
+        <span class="axis-value">{{ userProfile.controlLevel | number:'1.2-2' }}</span>
+      </div>
+      <div class="axis-bar">
+        <div
+          class="axis-fill"
+          [style.width.%]="((userProfile.controlLevel + 5) / 10) * 100"
+        ></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────── Loading State ─────────────── -->
+  <ng-container *ngIf="loading">
+    <div class="loading-placeholder">
+      <p>Loading personality…</p>
+    </div>
+  </ng-container>
 </div>

@@ -8,103 +8,199 @@
   background: transparent; /* let the global background image show */
 }
 
+/* src/app/statistics/statistics.component.scss */
+
+/* ────────────────────────────────────────────────────────────────────────── */
+/*  Base wrapper: display two cards side by side                              */
+/* ────────────────────────────────────────────────────────────────────────── */
 .statistics-wrapper {
-  width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  gap: 2.5rem;            /* space between left and right cards */
+  padding: 2rem 0;
 }
 
-.stats-container {
-  background-color: rgba(0, 0, 0, 0.6); /* semi-transparent dark overlay */
+/* ────────────────────────────────────────────────────────────────────────── */
+/*  Shared card styles (for both stats-card & axes-card)                     */
+/* ────────────────────────────────────────────────────────────────────────── */
+.stats-card,
+.axes-card {
+  background-color: rgba(0, 0, 0, 0.7);  /* semi-transparent dark overlay */
+  border-radius: 8px;
   padding: 2rem;
-  border-radius: 0.5rem;
-  max-width: 400px;
-  width: 90%;
-  text-align: center;
-  color: #fff; /* ensure all text inside is white by default */
+  width: 400px;                         /* fixed width for each card */
+  color: #fff;                          /* white text */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
 }
 
-/* ── Top archetype section ───────────────────────────────────────────────────── */
+/* ────────────────────────────────────────────────────────────────────────── */
+/*  Title/section headings                                                    */
+/* ────────────────────────────────────────────────────────────────────────── */
+.section-title {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-align: center;
+}
 
+/* ────────────────────────────────────────────────────────────────────────── */
+/*  Left Card: Top Archetype + Matches                                        */
+/* ────────────────────────────────────────────────────────────────────────── */
 .top-archetype {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 2rem;
+  gap: 1rem;
+
+  .top-text {
+    text-align: center;
+
+    h2 {
+      margin: 0;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .top-name {
+      margin: 0.25rem 0 0;
+      font-size: 1.6rem;
+      font-weight: 500;
+
+      .top-percent {
+        font-weight: 400;
+        margin-left: 0.5rem;
+        font-size: 1.3rem;
+        color: #ddd;
+      }
+    }
+  }
 
   .archetype-img {
     width: 200px;
     height: 200px;
     object-fit: contain;
-    margin-bottom: 0.5rem;
-  }
-
-  .top-text {
-    h2 {
-      margin: 0;
-      font-size: 1.5rem;
-      color: #fff;
-    }
-    .top-name {
-      margin: 0.5rem 0 0;
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-
-      .top-percent {
-        font-weight: 400;
-        margin-left: 0.5rem;
-        font-size: 1.25rem;
-        color: #ddd;
-      }
-    }
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    margin-bottom: 1.3rem;
   }
 }
 
-/* ── Archetype matches list ───────────────────────────────────────────────────── */
-
-.stats-container h3 {
-  margin-top: 0; 
-  margin-bottom: 1rem;
-  font-size: 1.3rem;
-  color: #fff;
-}
-
-.match-row {
-  margin-bottom: 1rem;
-}
-
-.match-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.25rem;
-}
-
-.match-label,
-.match-percent {
-  font-weight: 500;
-  font-size: 1rem;
-}
-
-.match-bar {
-  width: 100%;
-  height: 10px;
-  background-color: #444;
-  border-radius: 5px;
-  overflow: hidden;
-}
-
-.match-fill {
-  height: 100%;
-  background-color: #a855f7; /* purple (tailwind purple-500) */
-  transition: width 0.4s ease;
-}
-
-/* ensure list markers are removed */
-.stats-container ul {
+/* ────────────────────────────────────────────────────────────────────────── */
+/*  Friends list (archetype matches)                                          */
+/* ────────────────────────────────────────────────────────────────────────── */
+.matches-list {
   list-style: none;
   padding: 0;
   margin: 0;
+
+  li {
+    margin-bottom: 1.1rem;
+  }
+}
+
+.match-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  .match-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .match-label {
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: #fff;
+    }
+    .match-percent {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #fff;
+    }
+  }
+
+  .match-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #444;
+    border-radius: 4px;
+    overflow: hidden;
+
+    .match-fill {
+      height: 100%;
+      background-color: #a855f7; /* purple-500 */
+      transition: width 0.4s ease;
+    }
+  }
+}
+
+/* ────────────────────────────────────────────────────────────────────────── */
+/*  Right Card: User’s Five Axes                                               */
+/* ────────────────────────────────────────────────────────────────────────── */
+.axis-row {
+  display: flex;
+  flex-direction: column;  /* space between header and bar */ /* space between each axis-row */
+  gap: 0.2rem;
+}
+
+/* The label/value line */
+.axis-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.axis-label {
+  font-size: 1.1rem;   /* slightly larger than plain text */
+  font-weight: 500;
+  color: #fff;         /* white label */
+}
+
+.axis-value {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #fff;         /* white value */
+}
+
+/* The “track” of the bar */
+.axis-bar {
+  width: 100%;
+  height: 10px;  
+  background-color: #444; 
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* The “fill” portion, purple by default */
+.axis-fill {
+  height: 100%;
+  background-color: #a855f7; /* same purple-500 as before */
+  transition: width 0.4s ease; /* smooth resizing if values change */
+}
+
+/* ────────────────────────────────────────────────────────────────────────── */
+/*  “No match” placeholder (optional styling)                                  */
+/* ────────────────────────────────────────────────────────────────────────── */
+.no-match-text {
+  text-align: center;
+  color: #f1f1f1;
+  font-size: 1rem;
+  margin: 2rem 0;
+}
+
+/* ────────────────────────────────────────────────────────────────────────── */
+/*  Loading placeholder (optional styling)                                     */
+/* ────────────────────────────────────────────────────────────────────────── */
+.loading-placeholder {
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+  padding: 1.5rem;
+  width: 320px;
+  color: #fff;
+  text-align: center;
 }

@@ -1,7 +1,7 @@
 // src/app/statistics/statistics.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule }      from '@angular/common';
-import { ProfileService, ProfileMatchDTO } from '../services/profile.service';
+import { ProfileService,UserDreamProfileDTO, ProfileMatchDTO } from '../services/profile.service';
 import { AuthService }       from '../services/auth.service';
 
 @Component({
@@ -12,6 +12,7 @@ import { AuthService }       from '../services/auth.service';
   imports: [CommonModule]
 })
 export class StatisticsComponent implements OnInit {
+  userProfile: UserDreamProfileDTO | null = null;
   topMatch: ProfileMatchDTO | null = null;
   matches: ProfileMatchDTO[] = [];
   loading = true;
@@ -27,6 +28,15 @@ export class StatisticsComponent implements OnInit {
       this.loading = false;
       return;
     }
+
+    this.profileSvc.getUserProfile(userId).subscribe({
+      next: data => {
+        this.userProfile = data;
+      },
+      error: () => {
+        // handle the error if needed
+      }
+    });
 
     this.profileSvc.getUserMatches(userId).subscribe({
       next: data => {

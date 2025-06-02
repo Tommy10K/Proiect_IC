@@ -19,11 +19,13 @@
 }
 
   .title-toggle {
+    padding: 0.5rem 1rem; 
     margin-bottom: .5rem;
-    font-size: .9rem;
+    font-size: 1rem;
+    border-radius: 0.350rem;
     background-color: #3e4a6a;
-    color: #f3f2f8;
-    border-color: #3e4a6a ;
+    color: #ffffff !important;
+    border-color: #f3f2f8 !important;
   }
 
   .title-input {
@@ -38,9 +40,7 @@
     box-shadow: var(--shadow);
   }
 
-  .dashboard-message h2 {
-    color: #f3f2f8;
-  }
+
 
 .content {
   display: flex;
@@ -118,6 +118,14 @@
   max-width: 1600px;
   margin: 0 auto;
   padding: 0 20px;
+
+  & > .left-column,
+  & > .middle-column,
+  & > .right-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* center child vertically */
+  }
 }
 
 .middle-column {
@@ -155,6 +163,14 @@
   padding-right: 45px;
   align-items: center;
   justify-content: center;
+}
+
+.right-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2rem;
 }
 
 .side-button {
@@ -195,6 +211,11 @@
     cursor: pointer;
 }
 
+.logout-button:hover {
+  background-color: #6B21A8;
+  transform: scale(1.05);
+}
+
 .interpretation {
   background: rgba(0, 0, 0, 0.5);  // 50% opacity black
   color:      #f3f2f8;            // white-lavender text
@@ -207,6 +228,8 @@
 }
 .info-button {
   /* Trimite butonul central în header */
+  outline: 2px solid #fff;
+  outline-offset: 2px;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
@@ -259,45 +282,47 @@
   transform: translate(-50%, -50%) scale(1.08);
 }
 .quiz-card {
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  padding: 16px;
-  margin-top: 20px;
-  background-color: #fafafa;
-
-  /* Centrare conținut */
+  width: 100%;           /* full width of right-column */
+  max-width: 250px;      /* control card’s width */
+  background-color: #2C2E3F;  /* white card for contrast */
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 1.5rem;
   text-align: center;
+  color: #E0E0E0;              /* dark text on white */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
 }
 
 .quiz-card h3 {
-  margin-top: 0;
-  /* Mărim titlul și îngroșăm un pic */
-  font-size: 1.4rem;
+  margin: 0;
+  font-size: 1.45rem;
   font-weight: 600;
-  color: #333;
+  color: #FFFFFF;
 }
 
 .quiz-card p {
-  /* Mărim puțin textul descriptiv și centram */
-  font-size: 1rem;
-  color: #555;
-  margin-bottom: 12px;
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.4;
+  color: #E0E0E0; 
 }
 
 .btn-quiz {
-  margin-top: 10px;
-  padding: 10px 18px;
-  background-color: #007bff;
+  align-self: center;
+  background-color: #7C3AED;   /* purple button (example) */
   color: #fff;
   border: none;
+  padding: 0.5rem 1rem;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
-
-  /* Pentru a centra butonul sub text */
-  display: inline-block;
+  font-size: 1rem;
+  text-decoration: none;
 }
 
 .btn-quiz:hover {
-  background-color: #0056b3;
+  background-color: #6B21A8; 
 }
