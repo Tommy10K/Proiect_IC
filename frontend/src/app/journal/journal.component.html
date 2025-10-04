@@ -84,15 +84,22 @@
         <label>Title:
           <input type="text" formControlName="title" />
         </label>
-        <label>Description:
-          <textarea formControlName="description"></textarea>
-        </label>
+
         <label>Tags (comma separated):
           <input type="text" formControlName="tags" />
         </label>
-        <button type="submit" [disabled]="editForm.invalid">Save</button>
-        <button type="button" (click)="cancelEdit()">Cancel</button>
+
+        <label>Description:
+          <textarea formControlName="description"></textarea>
+        </label>
+
+        <!-- NEW: a wrapper to align buttons to the right (CSS above) -->
+        <div class="edit-actions">
+          <button type="submit" class="dream-btn btn-primary" [disabled]="editForm.invalid">Save</button>
+          <button type="button" class="dream-btn btn-outline" (click)="cancelEdit()">Cancel</button>
+        </div>
       </form>
+
     </div>
 
     <ng-template #noDetailEntry>
