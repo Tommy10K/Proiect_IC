@@ -1,18 +1,38 @@
-<!-- FORMULAR ADĂUGARE VIS -->
-<form class="dream-form" [formGroup]="dreamForm" (ngSubmit)="onSubmit()">
-  <label>Date:
-    <input type="date" formControlName="dreamDate" />
-  </label>
-  <label>Title:
-    <input type="text" formControlName="title" />
-  </label>
-  <label>Description:
-    <textarea formControlName="description"></textarea>
-  </label>
-  <button type="submit" [disabled]="dreamForm.invalid">Add Dream</button>
+<!-- FORMULAR ADĂUGARE VIS + SORT BUTTON -->
+<form class="dream-form dream-form-row" [formGroup]="dreamForm" (ngSubmit)="onSubmit()">
+  <div class="dream-form-fields">
+    <label>Date:
+      <input type="date" formControlName="dreamDate" />
+    </label>
+    <label>Title:
+      <input type="text" formControlName="title" />
+    </label>
+    <label>Description:
+      <textarea formControlName="description"></textarea>
+    </label>
+  </div>
+  <div class="dream-form-actions dream-form-actions-row">
+    <button type="submit" [disabled]="dreamForm.invalid">Add Dream</button>
+    <button class="dream-btn sort-btn" type="button" (click)="openTagSort()">Sort by Tag</button>
+  </div>
 </form>
 
-<div *ngIf="message" class="alert">{{ message }}</div>
+<!-- Tag sort popup -->
+<ng-container *ngIf="showTagSortModal">
+  <div class="modal-overlay" (click)="closeTagSort()"></div>
+  <div class="modal-content">
+    <button class="modal-close" (click)="closeTagSort()">×</button>
+    <h3>Sort Dreams by Tag</h3>
+    <label for="tagSelect">Choose a tag:</label>
+    <select id="tagSelect" [(ngModel)]="selectedTag" name="tagSelect">
+      <option *ngFor="let tag of allTags" [value]="tag">{{ tag }}</option>
+    </select>
+    <div class="button-row popup-btn-row">
+      <button class="dream-btn" (click)="applyTagSort()">Highlight</button>
+      <button class="dream-btn" (click)="clearTagSort()">Clear</button>
+    </div>
+  </div>
+</ng-container>
 
 <!-- CALENDAR ÎN GRID -->
 <h2 class="year-title">Dream Journal {{ year }}</h2>
@@ -24,6 +44,7 @@
         <span *ngFor="let _ of [].constructor(pad(m))"></span>
         <button *ngFor="let d of days(m)"
                 [class.has]="has(m,d)"
+                [class.tag-highlight]="isTagHighlighted(m,d)"
                 (click)="openDetail(m, d)">
           {{ d }}
         </button>
@@ -52,7 +73,26 @@
         <p *ngIf="e.tags?.length">
           <strong>Tags:</strong> {{ e.tags.join(', ') }}
         </p>
+        <div class="button-row">
+          <button class="dream-btn edit-btn" (click)="startEdit(e)">Edit</button>
+          <button class="dream-btn delete-btn" (click)="deleteDream(e)">Delete</button>
+        </div>
       </div>
+
+      <!-- Edit form shown when editing -->
+      <form *ngIf="editingEntry" [formGroup]="editForm" (ngSubmit)="submitEdit()" class="edit-form">
+        <label>Title:
+          <input type="text" formControlName="title" />
+        </label>
+        <label>Description:
+          <textarea formControlName="description"></textarea>
+        </label>
+        <label>Tags (comma separated):
+          <input type="text" formControlName="tags" />
+        </label>
+        <button type="submit" [disabled]="editForm.invalid">Save</button>
+        <button type="button" (click)="cancelEdit()">Cancel</button>
+      </form>
     </div>
 
     <ng-template #noDetailEntry>

@@ -137,3 +137,66 @@
   color: var(--clr-text-light);
   font-style: italic;
 }
+
+.button-row {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  justify-content: flex-end;
+}
+.dream-btn {
+  padding: .5rem 1.2rem;
+  border: none;
+  border-radius: .4rem;
+  background: #7C3AED;
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 0 2px 6px rgba(124,58,237,0.08);
+}
+.dream-btn:active {
+  background: #5b23b4;
+}
+.edit-btn,
+.delete-btn {
+  padding: .5rem 1.2rem;
+  background: #7C3AED;
+  color: white;
+  border: none;
+  width: 100px; /* or any consistent value */
+  text-align: center;
+}
+
+.dream-btn:hover {
+  filter: brightness(1.1);
+}
+.dream-form-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+  padding: 0.5rem 1rem;
+}
+.dream-form-fields {
+  display: flex;
+  gap: 1.2rem;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+.dream-form-actions-row {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+.month .days button.tag-highlight {
+  background: #3b82f6 !important; /* blue-500 */
+  color: #fff !important;
+  border: 2px solid #2563eb !important;
+  box-shadow: 0 0 0 2px #60a5fa44 !important;
+  z-index: 2;
+}

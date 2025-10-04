@@ -67,7 +67,7 @@ public class ProfileService {
         return profileRepo.findAll().stream()
             .map(p -> {
                 double sim = similarityScore(u, p);
-                return new ProfileMatchDTO(p.getName(), sim);
+                return new ProfileMatchDTO(p.getName(), sim, p.getDescription());
             })
             .sorted(Comparator.comparingDouble(ProfileMatchDTO::getSimilarity).reversed())
             .collect(Collectors.toList());

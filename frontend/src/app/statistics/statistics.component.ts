@@ -19,7 +19,7 @@ export class StatisticsComponent implements OnInit {
 
   constructor(
     private profileSvc: ProfileService,
-    private authSvc:    AuthService
+    private authSvc:    AuthService,
   ) {}
 
   ngOnInit(): void {

@@ -43,4 +43,14 @@ export class DreamEntryService {
   getDay(date: string): Observable<DreamEntry> {
     return this.http.get<DreamEntry>(`${this.API}/date/${date}`);
   }
+
+  /** Șterge un vis după id */
+  deleteDream(dreamId: number): Observable<any> {
+    return this.http.delete(`${this.API}/${dreamId}`);
+  }
+
+  /** Editează un vis existent */
+  updateDream(dreamId: number, update: Partial<DreamEntry>): Observable<any> {
+    return this.http.put(`${this.API}/${dreamId}`, update);
+  }
 }

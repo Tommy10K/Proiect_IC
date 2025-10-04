@@ -1,6 +1,7 @@
 package com.ITristii.backend.service;
 
 import com.ITristii.backend.dto.DreamDTO;
+import com.ITristii.backend.dto.UpdateDreamDTO;
 import com.ITristii.backend.model.Dream;
 import com.ITristii.backend.model.User;
 import com.ITristii.backend.repository.DreamRepository;
@@ -62,5 +63,32 @@ public class DreamService {
     @Transactional(readOnly = true)
     public List<Dream> getUserDreams(Long userId) {
         return dreamRepo.findAllByUserIdOrderByDreamDateDesc(userId);
+    }
+
+    @Transactional
+    public Dream updateDream(Long dreamId, UpdateDreamDTO dto) {
+        Dream dream = dreamRepo.findById(dreamId)
+            .orElseThrow(() -> new IllegalArgumentException("Dream not found: " + dreamId));
+        dream.setDreamDate(dto.getDreamDate());
+        dream.setTitle(dto.getTitle());
+        dream.setDescription(dto.getDescription());
+        Set<Tag> tagEntities = new HashSet<>();
+        for (String tagName : dto.getTags()) {
+            Tag tag = resolveTag(tagName);
+            tagEntities.add(tag);
+        }
+        if (tagEntities.isEmpty()) {
+            Tag noTags = resolveTag("no_tags");
+            tagEntities.add(noTags);
+        }
+        dream.setTags(tagEntities);
+        return dreamRepo.save(dream);
+    }
+
+    @Transactional
+    public void deleteDream(Long dreamId) {
+        Dream dream = dreamRepo.findById(dreamId)
+            .orElseThrow(() -> new IllegalArgumentException("Dream not found: " + dreamId));
+        dreamRepo.delete(dream);
     }
 }

@@ -8,4 +8,5 @@ import lombok.Getter;
 public class ProfileMatchDTO {
     private final String name;
     private final double similarity;
+    private String description;
 }

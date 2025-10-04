@@ -29,4 +29,7 @@ public class Profile {
 
     @Column(name = "control_level", nullable = false)
     private int controlLevel;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
 }
