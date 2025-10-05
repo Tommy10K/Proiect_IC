@@ -85,20 +85,20 @@
           <input type="text" formControlName="title" />
         </label>
 
+        <label>Description:
+          <textarea formControlName="description" rows="4"></textarea>
+        </label>
+
         <label>Tags (comma separated):
           <input type="text" formControlName="tags" />
         </label>
 
-        <label>Description:
-          <textarea formControlName="description"></textarea>
-        </label>
-
-        <!-- NEW: a wrapper to align buttons to the right (CSS above) -->
         <div class="edit-actions">
           <button type="submit" class="dream-btn btn-primary" [disabled]="editForm.invalid">Save</button>
           <button type="button" class="dream-btn btn-outline" (click)="cancelEdit()">Cancel</button>
         </div>
       </form>
+
 
     </div>
 

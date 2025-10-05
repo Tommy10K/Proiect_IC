@@ -91,6 +91,7 @@ export class JournalComponent implements OnInit {
     this.showDetailModal = false;
     this.selectedDate = undefined;
     this.entries = [];
+    this.cancelEdit();
   }
 
   /** submit formular */
@@ -129,21 +130,33 @@ export class JournalComponent implements OnInit {
 
   submitEdit(): void {
     if (!this.editingEntry || this.editForm.invalid) return;
+
     const { title, description, tags } = this.editForm.value;
-    const tagArr = tags.split(',').map((t: string) => t.trim()).filter((t: string) => t);
+    const tagArr = tags
+      .split(',')
+      .map((t: string) => t.trim())
+      .filter((t: string) => t);
+
+    const dreamDate = this.editingEntry.dreamDate;
+
     this.entrySvc.updateDream(this.editingEntry.id!, {
       title,
       description,
       tags: tagArr,
-      dreamDate: this.editingEntry.dreamDate
+      dreamDate
     }).subscribe({
       next: () => {
         this.message = 'Dream updated!';
         this.editingEntry = null;
-        this.select(
-          new Date(this.editingEntry!.dreamDate).getMonth(),
-          new Date(this.editingEntry!.dreamDate).getDate()
-        );
+
+        // 🟢 refresh entries inside the popup immediately
+        this.entrySvc.getDay(dreamDate).subscribe({
+          next: (updatedEntry) => {
+            this.entries = [updatedEntry];
+          }
+        });
+
+        // optional: refresh calendar too
         this.refreshYear();
       },
       error: () => {
@@ -152,11 +165,13 @@ export class JournalComponent implements OnInit {
     });
   }
 
+
   deleteDream(entry: DreamEntry): void {
     if (!entry.id) return;
     this.entrySvc.deleteDream(entry.id).subscribe({
       next: () => {
         this.message = 'Dream deleted!';
+        this.cancelEdit();
         this.closeDetail();
         this.refreshYear();
       },
